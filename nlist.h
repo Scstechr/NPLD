@@ -17,7 +17,7 @@ typedef struct{
 } nlist_Item;
 
 typedef struct{
-	nlist_Item *data;
+	nlist_Item data[STACK_SIZE];
 	int size;
 	int start;
 	int end;
@@ -61,7 +61,7 @@ int nlist_len(nlist_List *list);
 
 nlist_List *nlist_init(){
 	nlist_List *list = (nlist_List*)malloc(sizeof(nlist_List));
-	list->data = (nlist_Item *)malloc(sizeof(nlist_Item[STACK_SIZE]));
+	//list->data = (nlist_Item *)malloc(sizeof(nlist_Item[STACK_SIZE]));
 	list->size = 0;
 	list->start = 0;
 	list->end = -1;
