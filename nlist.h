@@ -17,7 +17,7 @@ typedef struct{
 } nlist_Item;
 
 typedef struct{
-	nlist_Item data[STACK_SIZE];
+	nlist_Item data[STACK_SIZE]; // This also has to change to malloc()
 	int size;
 	int start;
 	int end;
@@ -59,7 +59,8 @@ int nlist_len(nlist_List *list);
 // e.g. list = [0, 1]
 // nlist_len(list) = 2
 
-nlist_List *nlist_init(){
+nlist_List *nlist_init()
+{
 	nlist_List *list = (nlist_List*)malloc(sizeof(nlist_List));
 	//list->data = (nlist_Item *)malloc(sizeof(nlist_Item[STACK_SIZE]));
 	list->size = 0;
@@ -68,7 +69,8 @@ nlist_List *nlist_init(){
 	return list;
 }
 
-void nlist_setparam(nlist_List *list, int index, int n, int before, int after){
+void nlist_setparam(nlist_List *list, int index, int n, int before, int after)
+{
 	if(n > INT_MIN){
 		list->data[index].item = n;
 	}
@@ -80,14 +82,16 @@ void nlist_setparam(nlist_List *list, int index, int n, int before, int after){
 	}
 }
 
-void nlist_sizecheck(nlist_List *list){
+void nlist_sizecheck(nlist_List *list)
+{
 	if(list->size == 0){
 		printf("**empty list**\n");
 		assert(0);
 	}
 }
 
-void nlist_append(nlist_List *list, int n){
+void nlist_append(nlist_List *list, int n)
+{
 	//printf("\nnlist_append(list, %d);\n", n);
 	list->data[list->end].after = list->size;
 
@@ -99,7 +103,8 @@ void nlist_append(nlist_List *list, int n){
 	assert(list->size < STACK_SIZE);
 }
 
-void nlist_insert(nlist_List *list, int index, int n){
+void nlist_insert(nlist_List *list, int index, int n)
+{
 	assert(index < list->size);
 	if (index == 0){
 		nlist_setparam(list, list->size, n, list->data[list->end].before, list->end);
@@ -159,7 +164,8 @@ void nlist_clear(nlist_List *list){
 	list->data[0].after = INT_MAX;
 }
 
-int nlist_pop(nlist_List *list){
+int nlist_pop(nlist_List *list)
+{
 	assert (list->size > 0);
 	int retnum = list->data[list->end].item;
 	list->size--;
@@ -168,11 +174,13 @@ int nlist_pop(nlist_List *list){
 	return retnum;
 }
 
-int nlist_len(nlist_List *list){
+int nlist_len(nlist_List *list)
+{
 	return list->size;
 }
 
-void nlist_print(nlist_List *list){
+void nlist_print(nlist_List *list)
+{
 	//nlist_sizecheck(list);
 	if(list->size == 0){
 		printf("\n[]\n");
@@ -191,7 +199,9 @@ void nlist_print(nlist_List *list){
 	}
 }
 
-void nlist_param(nlist_List *list){
+void nlist_param(nlist_List *list)
+{
+	// For Debugging
 	printf("list->size:%d, ", list->size);
 	printf("list->start:%d, ", list->start);
 	printf("list->end:%d\n", list->end);
@@ -209,8 +219,8 @@ void nlist_param(nlist_List *list){
 	}
 }
 
-int *nlist_to_array(nlist_List *list){
-	
+int *nlist_to_array(nlist_List *list)
+{	
 	assert(list->size > 0);
 	int *array = (int*)malloc(list->size);
 	int i = list->start;
@@ -225,15 +235,16 @@ int *nlist_to_array(nlist_List *list){
 	return array;
 }
 	
-nlist_List *array_to_nlist(int *array)
+nlist_List *array_to_nlist(int *array, int size)
 {
 	nlist_List *list = nlist_init();
-	int array_size = sizeof(array) / sizeof(array[0]);
+	int array_size = size;
 	for(int i = 0; i < array_size; i++){
 		nlist_append(list, array[i]);
 	}
-
-	printf("%d\n", array_size);
+	list->start = 0;
+	list->end = array_size;
+	list->size = array_size;
 	return list;
 }
 
@@ -246,15 +257,16 @@ nlist_List *nlist_random_pick(int size, int num)
 	for(int i = 0; i < size; i++) range_list[i] = i;
 
 	for(int i = size - 1; i >= size - num; i--){
-		int rand = genrand_int32()%i;
-		int temp = range_list[rand];
-		range_list[rand] = range_list[i];
+		int randnum = genrand_int32()%i;
+		int temp = range_list[randnum];
+		range_list[randnum] = range_list[i];
 		nlist_append(list, temp);
 	}
 	return list;
 }	
 
-int nlist_index(nlist_List *list, int index){
+int nlist_index(nlist_List *list, int index)
+{
 	int i, j;
 	if (index < list->size / 2){
 		j = 0; i = list->start;
@@ -288,5 +300,18 @@ nlist_List *nlist_delete(nlist_List *list, int index)
 	}
 	list->size --;
 	return list;
+}
+
+nlist_List *nlist_shuffle(nlist_List *list)
+{
+	assert (list->size > 0);
+	int *array = nlist_to_array(list);
+	for(int i = list->size - 1; i > 1; i--){
+		int randnum = genrand_int32()%i;
+		int temp = array[randnum];
+		array[randnum] = array[i];
+		array[i] = temp;
+	}
+	return array_to_nlist(array, list->size);
 }
 #endif
