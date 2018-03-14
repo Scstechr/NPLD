@@ -17,7 +17,7 @@ typedef struct{
 } nlist_Item;
 
 typedef struct{
-	nlist_Item data[STACK_SIZE];
+	nlist_Item *data;
 	int size;
 	int start;
 	int end;
@@ -61,6 +61,7 @@ int nlist_len(nlist_List *list);
 
 nlist_List *nlist_init(){
 	nlist_List *list = (nlist_List*)malloc(sizeof(nlist_List));
+	list->data = (nlist_Item *)malloc(sizeof(nlist_Item[STACK_SIZE]));
 	list->size = 0;
 	list->start = 0;
 	list->end = -1;
@@ -170,17 +171,7 @@ int nlist_pop(nlist_List *list){
 int nlist_len(nlist_List *list){
 	return list->size;
 }
-//
-//int nlist_index(nlist_List *list, int index){
-//	assert(index <= list->size);
-//	int i = list->data[0].after;
-//	for(int j = 0; j < index; j++){
-//		assert(j < STACK_SIZE);
-//		i = list->data[i].after;
-//	}
-//	return list->data[i].item;
-//}
-//
+
 void nlist_print(nlist_List *list){
 	//nlist_sizecheck(list);
 	if(list->size == 0){
@@ -208,9 +199,12 @@ void nlist_param(nlist_List *list){
 		printf("i:%5d", i);
 		printf(" | before:%5d <- ", list->data[i].before);
 		printf("[ data:%5d ]", list->data[i].item);
-		printf(" -> after:%5d", list->data[i].after);
+		if (list->data[i].after != INT_MAX) {
+			printf(" -> after:%5d", list->data[i].after);
+		} else {
+			printf(" -> END");
+		}
 		if(i == list->start) printf("\tSTART");
-		if(list->data[i].after == 10000) printf("\tEND");
 		printf("\n");
 	}
 }
@@ -231,4 +225,68 @@ int *nlist_to_array(nlist_List *list){
 	return array;
 }
 	
+nlist_List *array_to_nlist(int *array)
+{
+	nlist_List *list = nlist_init();
+	int array_size = sizeof(array) / sizeof(array[0]);
+	for(int i = 0; i < array_size; i++){
+		nlist_append(list, array[i]);
+	}
+
+	printf("%d\n", array_size);
+	return list;
+}
+
+nlist_List *nlist_random_pick(int size, int num)
+{
+	/* implementation of slower version */
+	assert(size >= num && size > 0 && num > 0);
+	nlist_List *list = nlist_init();
+	int range_list[size];
+	for(int i = 0; i < size; i++) range_list[i] = i;
+
+	for(int i = size - 1; i >= size - num; i--){
+		int rand = genrand_int32()%i;
+		int temp = range_list[rand];
+		range_list[rand] = range_list[i];
+		nlist_append(list, temp);
+	}
+	return list;
+}	
+
+int nlist_index(nlist_List *list, int index){
+	int i, j;
+	if (index < list->size / 2){
+		j = 0; i = list->start;
+		while(j != index){
+			assert(j < list->size);
+			i = list->data[i].after; j++;
+		}
+	} else {
+		j = list->size - 1; i = list->end;
+		while(j != index){
+			assert(j > 0);
+			i = list->data[i].before; j--;
+		}
+	}
+	return i;
+}
+
+nlist_List *nlist_delete(nlist_List *list, int index)
+{
+	assert(index < list->size);
+	int idx = nlist_index(list, index);
+	if (idx == list->start){
+		nlist_setparam(list, list->data[idx].after, INT_MIN, -1, INT_MIN);
+		list->start = list->data[idx].after;
+	} else if (idx == list->end){
+		nlist_setparam(list, list->data[idx].before, INT_MIN, INT_MIN, INT_MAX);
+		list->end = list->data[idx].before;
+	} else {
+		nlist_setparam(list, list->data[idx].before, INT_MIN, INT_MIN, list->data[idx].after);
+		nlist_setparam(list, list->data[idx].after, INT_MIN, list->data[idx].before, INT_MIN);
+	}
+	list->size --;
+	return list;
+}
 #endif
