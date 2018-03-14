@@ -10,7 +10,7 @@ include <time.h>
 // not-List Implementation
 include "nlist.h"
 
-// Mersenne Twister (MT19937) library
+// Mersenne Twister (MT19937)
 // (C) 1997 - 2002, M. Matsumoto & T. Nishimura
 // www.sat.t.u-tokyo.ac.jp/~omi/random_variables_generation.html
 include "MT.h"
@@ -33,12 +33,10 @@ free(list);
 ###### In Python:
 ```python
 # In python:
-l = []
+l = list()
 ```
 
 #### `nlist_range(int num)`
-Similar to `range` function in `Python`.
-
 ```C
 nlist_List *list = nlist_range(10);
 nlist_print(list);
