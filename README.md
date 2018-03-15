@@ -81,3 +81,11 @@ nlist_delete(list, 2);
 l = list(range(4))
 del l[2]
 ```
+#### `nlist_random_pick(int size, int num)`
+```C
+nlist_List *list = nlist_random_pick(10, 2);
+```
+```python
+import random
+l = random.choices(range(10), k=2)
+```
