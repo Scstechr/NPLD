@@ -36,22 +36,17 @@ void nrand_ver(){
 }
 
 void npoly_ver(){
-	double coef[5];
-	coef[2] = 4.53;
-	coef[3] = 2.34;
-	coef[4] = 3.42;
+	double coef[4];
+	coef[3] = 4.0;
 	int coef_size = sizeof(coef)/sizeof(double);
 	nlist_List *poly = npoly_init(coef, coef_size, 1);
-	printf("%lf\n",npoly_subs(poly, 2.0));
 	npoly_print(poly);
-	npoly_deriv(poly); npoly_print(poly);
-	npoly_deriv(poly); npoly_print(poly);
+	printf("%lf\n",npoly_subs(poly, 2.0));
+	npoly_integ(poly, 0.0, 1.0);
 	npoly_deriv(poly); npoly_print(poly);
 }
 
 int main(){
-
-
 	init_genrand((unsigned)time(NULL));
 	list_ver();
 	dict_ver();
