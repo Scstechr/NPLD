@@ -14,21 +14,15 @@
 
 int nrand_dist_pick(nlist_List *poly)
 {
-	int i = poly->start;
-	int j = 0;
-	double sum = 0.0;
+	int j = 0; double sum = 0.0; double min = 0.0; double max = 0.0;
 	double rand = genrand_real1();
-	double min = 0.0;
-	double max = 0.0;
-	while(1){
+	for(int i = poly->start; i != INT_MAX; i = poly->data[i].after){
 		if (poly->data[i].ditem != 0.0){
 			sum += poly->data[i].ditem;
 			max = sum;
 			if (min < rand && rand < max) break; 
 			min = sum;
 		}
-		i = poly->data[i].after;
-		if(i == INT_MAX) break; 
 		j++;
 	}
 	return j;
@@ -48,17 +42,15 @@ void nrand_dist_check(nlist_List *poly)
 		sum = list->data[j].item + 1;
 		nlist_substitute(list, j, sum);  
 	}
-	int i = poly->start;
 	j = 0; // Safety
 	int k = 0;
-	while(1){
+	for(int i = poly->start; i != INT_MAX; i = poly->data[i].after){
 		assert(j <= poly->size);
 		sum = list->data[j].item;
 		if (sum > 0){
-			printf("\t\t%2d=>%.6lf\n",j,(double)sum/trial);
+			printf("\t\t%2d=>%.6lf",j,(double)sum/trial);
+			printf("\t%+.6lf\n",poly->data[j].ditem - (double)sum/trial);
 		}
-		i = poly->data[i].after;
-		if(i == INT_MAX) break; 
 		j++;
 	}
 }
