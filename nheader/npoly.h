@@ -96,8 +96,8 @@ void npoly_deriv(nlist_List *poly){
 	poly->data[poly->size].after = INT_MAX;
 }
 
-nlist_List *npoly_integ(nlist_List *poly){
+double npoly_integ(nlist_List *poly, double a, double b){
 	npoly_print(poly);
-	return poly;
+	return 0.0;
 }
 #endif
