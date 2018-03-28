@@ -37,33 +37,30 @@ nlist_List *npoly_init(double *coeff, int coeff_size, int d_check){
 
 void npoly_print(nlist_List *poly)
 {
-	if(poly->size == 0){
-		printf("\n[]\n");
-	} else {
-		int i = poly->start;
-		int j = 0; // Safety
-		int k = 0;
-		printf("f(x)=");
-		while(1){
-			assert(j <= poly->size);
-			if (poly->data[i].ditem != 0.0){
-				if(k == 0 ){
-					k++;
-					if (poly->data[i].ditem > 0){
-						printf("%.2lfx^{%d}", poly->data[i].ditem, j);
-					} else {
-						printf("-%.2lfx^{%d}", poly->data[i].ditem, j);
-					}
+	assert( poly->size > 1);
+	int i = poly->start;
+	int j = 0; // Safety
+	int k = 0;
+	printf("f(x)=");
+	while(1){
+		assert(j <= poly->size);
+		if (poly->data[i].ditem != 0.0){
+			if(k == 0 ){
+				k++;
+				if (poly->data[i].ditem > 0){
+					printf("%.3lfx^{%d}", poly->data[i].ditem, j);
 				} else {
-					printf("%+.2lfx^{%d}", poly->data[i].ditem, j);
+					printf("-%.3lfx^{%d}", poly->data[i].ditem, j);
 				}
+			} else {
+				printf("%+.3lfx^{%d}", poly->data[i].ditem, j);
 			}
-			i = poly->data[i].after;
-			if(i == INT_MAX) break; 
-			j++;
 		}
-		printf("\n");
+		i = poly->data[i].after;
+		if(i == INT_MAX) break; 
+		j++;
 	}
+	printf("\n");
 }
 
 double npoly_subs(nlist_List *poly, double num)
@@ -84,11 +81,36 @@ double npoly_subs(nlist_List *poly, double num)
 	return dnum;
 }
 
-nlist_List *npoly_deriv(nlist_List *poly){
-	return poly;
+void npoly_copy(nlist_List *poly1, nlist_List *poly2){
+	assert (poly1->size <= poly2->size);
+	for(int i = 0; i < poly2->size; i++){
+		poly2->data[i].ditem = poly1->data[i].ditem;
+	}
+}
+
+void npoly_deriv(nlist_List *poly){
+	assert( poly->size > 1 );
+	double dnum = 0.0; double coef[poly->size];
+	for(int l = 0; l < poly->size; l++) coef[l] = 0.0; 
+	nlist_List *ret = npoly_init(coef, poly->size, 1);
+	
+	int i = poly->start; int j = 0; int k = 0;
+	while(1){
+		assert(j <= poly->size);
+		k = i;
+		if (poly->data[i].ditem != 0.0) dnum += poly->data[i].ditem; 
+		i = poly->data[i].after;
+		if (i == INT_MAX) break;
+		ret->data[k].ditem = i*poly->data[i].ditem;
+		j++;
+	}
+	npoly_copy(ret, poly);
+	poly->size --;
+	poly->data[poly->size].after = INT_MAX;
 }
 
 nlist_List *npoly_integ(nlist_List *poly){
+	npoly_print(poly);
 	return poly;
 }
 #endif
