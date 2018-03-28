@@ -8,10 +8,9 @@
 #include <assert.h>
 #include <limits.h>
 
-#include "debugg.h"
-
 typedef struct{
 	int item;
+	double ditem;
 	int before;
 	int after;
 } nlist_Item;
@@ -62,7 +61,6 @@ int nlist_len(nlist_List *list);
 nlist_List *nlist_init()
 {
 	nlist_List *list = (nlist_List*)malloc(sizeof(nlist_List));
-	//list->data = (nlist_Item *)malloc(sizeof(nlist_Item[STACK_SIZE]));
 	list->size = 0;
 	list->start = 0;
 	list->end = -1;
@@ -92,8 +90,13 @@ void nlist_sizecheck(nlist_List *list)
 
 void nlist_append(nlist_List *list, int n)
 {
-	//printf("\nnlist_append(list, %d);\n", n);
-	list->data[list->end].after = list->size;
+	//printf("%d\n", list->end);
+	//printf("%d\n", list->size);
+	if(list->end > 0){
+		list->data[list->end].after = list->size;
+	} else {
+		list->data[0].after = list->size;
+	}
 
 	nlist_setparam(list, list->size, n, list->end, INT_MAX);
 	
@@ -156,6 +159,30 @@ nlist_List *nlist_range(int n){
 	return list;
 }
 
+nlist_List *nlist_zeros(int n){
+	nlist_List *list = (nlist_List*)malloc(sizeof(nlist_List));
+	list->size = n;
+	list->end = n-1;
+	list->start = 0;
+	for(int i = 0; i < n; i++){
+		nlist_setparam(list, i, 0, i-1, i+1);
+	}
+	list->data[list->end].after = INT_MAX;
+	return list;
+}
+
+nlist_List *nlist_ones(int n){
+	nlist_List *list = (nlist_List*)malloc(sizeof(nlist_List));
+	list->size = n;
+	list->end = n-1;
+	list->start = 0;
+	for(int i = 0; i < n; i++){
+		nlist_setparam(list, i, 1, i-1, i+1);
+	}
+	list->data[list->end].after = INT_MAX;
+	return list;
+}
+
 void nlist_clear(nlist_List *list){
 	list->size = 0;
 	list->start = 0;
@@ -201,7 +228,7 @@ void nlist_print(nlist_List *list)
 
 void nlist_param(nlist_List *list)
 {
-	// For Debugging
+	// for debugging
 	printf("list->size:%d, ", list->size);
 	printf("list->start:%d, ", list->start);
 	printf("list->end:%d\n", list->end);
@@ -212,9 +239,9 @@ void nlist_param(nlist_List *list)
 		if (list->data[i].after != INT_MAX) {
 			printf(" -> after:%5d", list->data[i].after);
 		} else {
-			printf(" -> END");
+			printf(" -> end");
 		}
-		if(i == list->start) printf("\tSTART");
+		if(i == list->start) printf("\tstart");
 		printf("\n");
 	}
 }
@@ -248,25 +275,11 @@ nlist_List *array_to_nlist(int *array, int size)
 	return list;
 }
 
-nlist_List *nlist_random_pick(int size, int num)
-{
-	/* implementation of slower version */
-	assert(size >= num && size > 0 && num > 0);
-	nlist_List *list = nlist_init();
-	int range_list[size];
-	for(int i = 0; i < size; i++) range_list[i] = i;
-
-	for(int i = size - 1; i >= size - num; i--){
-		int randnum = genrand_int32()%i;
-		int temp = range_list[randnum];
-		range_list[randnum] = range_list[i];
-		nlist_append(list, temp);
-	}
-	return list;
-}	
 
 int nlist_index(nlist_List *list, int index)
 {
+	assert(list->size > 0);
+	assert(index < list->size);
 	int i, j;
 	if (index < list->size / 2){
 		j = 0; i = list->start;
@@ -283,6 +296,14 @@ int nlist_index(nlist_List *list, int index)
 	}
 	return i;
 }
+
+void nlist_substitute(nlist_List *list, int index, int n){
+	assert(list->size > 0);
+	assert(index < list->size);
+	int j = nlist_index(list, index);
+	list->data[j].item = n;
+}
+
 
 nlist_List *nlist_delete(nlist_List *list, int index)
 {
@@ -302,16 +323,23 @@ nlist_List *nlist_delete(nlist_List *list, int index)
 	return list;
 }
 
-nlist_List *nlist_shuffle(nlist_List *list)
+void nlist_simple_print(nlist_List *list)
 {
-	assert (list->size > 0);
-	int *array = nlist_to_array(list);
-	for(int i = list->size - 1; i > 1; i--){
-		int randnum = genrand_int32()%i;
-		int temp = array[randnum];
-		array[randnum] = array[i];
-		array[i] = temp;
+	//nlist_sizecheck(list);
+	if(list->size == 0){
+		printf("[]\n");
+	} else {
+		int i = list->start;
+		int j = 0; // Safety
+		printf("[");
+		while(1){
+			assert(j < list->size);
+			printf("%3d ", list->data[i].item);
+			i = list->data[i].after;
+			if(i == INT_MAX) break; 
+			j++;
+		}
+		printf("]");
 	}
-	return array_to_nlist(array, list->size);
 }
 #endif
