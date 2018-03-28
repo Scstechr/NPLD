@@ -90,20 +90,14 @@ void ndict_print(ndict_Dict *dict){
 	if(dict->size == 0){
 		printf("empty");
 	} else {
-		int i = dict->start;
 		int j = 0;
 		printf("\nsize:%3d, int dict w/ int list\n", dict->size);
-		while(1){
-			
+		for(int i = dict->start; i != INT_MAX; i = dict->data[i].after){
 			printf("%3d:", j);
 			nlist_simple_print(dict->data[i].list);
-			i = dict->data[i].after;
 			printf("\n");
 			j++;
-
-			if (i == INT_MAX) break;
 		}
-		
 	}
 }
 
