@@ -83,4 +83,12 @@ double npoly_subs(nlist_List *poly, double num)
 	}
 	return dnum;
 }
+
+nlist_List *npoly_deriv(nlist_List *poly){
+	return poly;
+}
+
+nlist_List *npoly_integ(nlist_List *poly){
+	return poly;
+}
 #endif

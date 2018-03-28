@@ -1,25 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
-#include <time.h>
-#include <math.h>
-
-/* STACK_SIZE
-Defines: Maximum row&column size
-Caution: Use malloc to avoid segmentation fault 
-	e.g.
-	narray_Array *array;
-	array = (narray_Array*)malloc(sizeof(narray_Array));
-*/
-
-#include "MT.h"
-
-#include "define.h"
-//#include "narray.h"
-#include "nheader/nlist.h"
-#include "nheader/ndict.h"
-#include "nheader/nrandom.h" /* requires nlist.h */
-#include "nheader/npoly.h"
+#include "header.h"
 
 void list_ver(){
 	int size = 100;

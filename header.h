@@ -8,6 +8,7 @@
 #include <time.h>
 #include <math.h>
 
+#include "./define.h"
 #include "./debugg.h"
 #include "./MT.h"
 #include "./nheader/narray.h"
