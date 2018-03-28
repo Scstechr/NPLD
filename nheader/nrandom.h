@@ -62,7 +62,6 @@ nlist_List *nrand_pick(int size, int num)
 	nlist_List *list = nlist_init();
 	int range_list[size];
 	for(int i = 0; i < size; i++) range_list[i] = i;
-
 	for(int i = size - 1; i >= size - num; i--){
 		int randnum = genrand_int32()%i;
 		int temp = range_list[randnum];
