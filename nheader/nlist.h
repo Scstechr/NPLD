@@ -212,14 +212,11 @@ void nlist_print(nlist_List *list)
 	if(list->size == 0){
 		printf("\n[]\n");
 	} else {
-		int i = list->start;
 		int j = 0; // Safety
 		printf("\nsize:%3d, int list\n[ ", list->size);
-		while(1){
+		for(int i = list->start; i != INT_MAX; i = list->data[i].after){
 			assert(j < list->size);
 			printf("%3d ", list->data[i].item);
-			i = list->data[i].after;
-			if(i == INT_MAX) break; 
 			j++;
 		}
 		printf("]\n");
@@ -250,13 +247,10 @@ int *nlist_to_array(nlist_List *list)
 {	
 	assert(list->size > 0);
 	int *array = (int*)malloc(list->size);
-	int i = list->start;
 	int j = 0; // Safety
-	while(1){
+	for(int i = list->start; i != INT_MAX; i = list->data[i].after){
 		assert(j < list->size);
 		array[j] = list->data[i].item;
-		i = list->data[i].after;
-		if(i == INT_MAX) break; 
 		j++;
 	}
 	return array;
@@ -329,14 +323,11 @@ void nlist_simple_print(nlist_List *list)
 	if(list->size == 0){
 		printf("[]\n");
 	} else {
-		int i = list->start;
 		int j = 0; // Safety
 		printf("[");
-		while(1){
+		for(int i = list->start; i != INT_MAX; i = list->data[i].after){
 			assert(j < list->size);
 			printf("%3d ", list->data[i].item);
-			i = list->data[i].after;
-			if(i == INT_MAX) break; 
 			j++;
 		}
 		printf("]");

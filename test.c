@@ -53,9 +53,9 @@ int main(){
 
 
 	init_genrand((unsigned)time(NULL));
-	//list_ver();
-	//dict_ver();
-	//nrand_ver();
+	list_ver();
+	dict_ver();
+	nrand_ver();
 	npoly_ver();
 	return 0;
 }
