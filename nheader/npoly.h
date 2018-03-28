@@ -98,6 +98,10 @@ void npoly_deriv(nlist_List *poly){
 
 double npoly_integ(nlist_List *poly, double a, double b){
 	npoly_print(poly);
-	return 0.0;
+	int N = 10;
+
+	double delta = (b - a) / N;
+	double value = 0.0;
+	return value;
 }
 #endif
