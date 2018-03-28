@@ -80,16 +80,15 @@ void npoly_copy(nlist_List *poly1, nlist_List *poly2){
 
 void npoly_deriv(nlist_List *poly){
 	assert( poly->size > 1 );
-	double dnum = 0.0; double coef[poly->size];
+	double coef[poly->size];
 	for(int i = 0; i < poly->size; i++) coef[i] = 0.0; 
 	nlist_List *ret = npoly_init(coef, poly->size, 1);
-	
-	int j = 0; int k = 0;
+	int j = 0;
 	for(int i = poly->start; i != INT_MAX; i = poly->data[i].after){
 		assert(j <= poly->size);
-		k = i;
-		if (poly->data[i].ditem != 0.0) dnum += poly->data[i].ditem; 
-		ret->data[k].ditem = i*poly->data[i].ditem;
+		if (poly->data[i].ditem != 0.0){
+			ret->data[poly->data[i].before].ditem = i*poly->data[i].ditem;
+		}
 		j++;
 	}
 	npoly_copy(ret, poly);
