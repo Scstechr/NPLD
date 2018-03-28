@@ -103,7 +103,7 @@ double npoly_integ(nlist_List *poly, double a, double b){
 	double fa = npoly_subs(poly, a);
 	double ff = 4 * npoly_subs(poly, (a + b)/2.0);
 	double fb = npoly_subs(poly, b);
-	value = ( (b - a) / 6.0 ) * (fa+ff+fb);
+	value = ( (b - a) / 6.0 ) * ( fa + ff + fb);
 	return value;
 }
 #endif
