@@ -29,7 +29,7 @@ void nrand_ver(){
 	int coef_size = sizeof(coef)/sizeof(double);
 	nlist_List *poly = npoly_init(coef, coef_size, 0);
 	ndict_Dict *dict = ndict_init();
-	nrand_dist_check2(poly);
+	nrand_dist_check(poly);
 }
 
 void npoly_ver(){

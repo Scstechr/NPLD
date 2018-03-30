@@ -39,6 +39,20 @@ static nlist_List *nrand_loop(nlist_List *poly, int trial){
 	return list;
 }
 
+static void nrand_loop2(nlist_List *list, nlist_List *poly,
+		                double *max, double *min, double *sum,
+						int trial){
+	for(int i = poly->start; i != INT_MAX; i = poly->data[i].after){
+		assert(i <= poly->size);
+		if (list->data[i].item > 0){
+			double result = (double)list->data[i].item/trial;
+			sum[i] += result;
+			if (max[i] < result) max[i] = result;
+			if (min[i] > result) min[i] = result;
+		}
+	}
+}
+
 static void nrand_dist_head(nlist_List *poly, int trial){
 	printf("objective:\t"); npoly_print(poly);
 	printf("trial:\t\t%d\nresult:\n", trial);
@@ -46,32 +60,23 @@ static void nrand_dist_head(nlist_List *poly, int trial){
 
 void nrand_dist_check(nlist_List *poly)
 {
-	int trial = 10000;
-	nrand_dist_head(poly, trial);
-	nlist_List *list = nrand_loop(poly, trial);
+	int trial = 10000; nrand_dist_head(poly, trial);
+	double max[poly->size]; double min[poly->size]; double sum[poly->size];
 	for(int i = poly->start; i != INT_MAX; i = poly->data[i].after){
-		assert(i <= poly->size);
-		int sum = list->data[i].item;
-		if (sum > 0){
-			printf("\t\t%2d=>%.6lf",i,(double)sum/trial);
-			printf("\t%+.6lf\n",poly->data[i].ditem - (double)sum/trial);
+		max[i]= 0.0; min[i] = 1.0; sum[i] = 0.0;
+	}
+	for(int _ = 0;  _ < trial; _++){
+		nlist_List *list = nrand_loop(poly, trial);
+		nrand_loop2(list, poly, max, min, sum, trial);
+	}
+	for(int i = poly->start; i != INT_MAX; i = poly->data[i].after){
+		if (sum[i] > 0){
+			double result = sum[i]/trial;
+			printf("\t\t%2d=>%.6lf(±%.6lf)", i, result, max[i] - min[i]);
+			printf("\t%+.6lf\n", poly->data[i].ditem - result);
 		}
 	}
-}
 
-void nrand_dist_check2(nlist_List *poly)
-{
-	int trial = 10000;
-	nrand_dist_head(poly, trial);
-	nlist_List *list = nrand_loop(poly, trial);
-	for(int i = poly->start; i != INT_MAX; i = poly->data[i].after){
-		assert(i <= poly->size);
-		int sum = list->data[i].item;
-		if (sum > 0){
-			printf("\t\t%2d=>%.6lf",i,(double)sum/trial);
-			printf("\t%+.6lf\n",poly->data[i].ditem - (double)sum/trial);
-		}
-	}
 }
 
 nlist_List *nrand_pick(int size, int num)
