@@ -28,30 +28,49 @@ int nrand_dist_pick(nlist_List *poly)
 	return j;
 }
 
-void nrand_dist_check(nlist_List *poly)
-{
+static nlist_List *nrand_loop(nlist_List *poly, int trial){
 	nlist_List *list = nlist_zeros(poly->size);
-	printf("objective:\t");
-	npoly_print(poly);
-	int j = 0;
-	int sum = 0;
-	int trial = 1000000;
-	printf("trial:\t\t%d\nresult:\n", trial);
+	int j = 0; int sum = 0;
 	for(int i = 0; i < trial; i++){
 		j = nrand_dist_pick(poly);
 		sum = list->data[j].item + 1;
 		nlist_substitute(list, j, sum);  
 	}
-	j = 0; // Safety
-	int k = 0;
+	return list;
+}
+
+static void nrand_dist_head(nlist_List *poly, int trial){
+	printf("objective:\t"); npoly_print(poly);
+	printf("trial:\t\t%d\nresult:\n", trial);
+}
+
+void nrand_dist_check(nlist_List *poly)
+{
+	int trial = 10000;
+	nrand_dist_head(poly, trial);
+	nlist_List *list = nrand_loop(poly, trial);
 	for(int i = poly->start; i != INT_MAX; i = poly->data[i].after){
-		assert(j <= poly->size);
-		sum = list->data[j].item;
+		assert(i <= poly->size);
+		int sum = list->data[i].item;
 		if (sum > 0){
-			printf("\t\t%2d=>%.6lf",j,(double)sum/trial);
-			printf("\t%+.6lf\n",poly->data[j].ditem - (double)sum/trial);
+			printf("\t\t%2d=>%.6lf",i,(double)sum/trial);
+			printf("\t%+.6lf\n",poly->data[i].ditem - (double)sum/trial);
 		}
-		j++;
+	}
+}
+
+void nrand_dist_check2(nlist_List *poly)
+{
+	int trial = 10000;
+	nrand_dist_head(poly, trial);
+	nlist_List *list = nrand_loop(poly, trial);
+	for(int i = poly->start; i != INT_MAX; i = poly->data[i].after){
+		assert(i <= poly->size);
+		int sum = list->data[i].item;
+		if (sum > 0){
+			printf("\t\t%2d=>%.6lf",i,(double)sum/trial);
+			printf("\t%+.6lf\n",poly->data[i].ditem - (double)sum/trial);
+		}
 	}
 }
 

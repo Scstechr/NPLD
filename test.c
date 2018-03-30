@@ -29,13 +29,7 @@ void nrand_ver(){
 	int coef_size = sizeof(coef)/sizeof(double);
 	nlist_List *poly = npoly_init(coef, coef_size, 0);
 	ndict_Dict *dict = ndict_init();
-	nrand_dist_check(poly);
-	ndict_print(dict);
-	for(int i = 0; i < 30; i ++){
-		nlist_List *list = nrand_pick(1000, nrand_dist_pick(poly));
-		ndict_append(dict, list);
-	}
-	ndict_print(dict);
+	nrand_dist_check2(poly);
 }
 
 void npoly_ver(){
@@ -51,9 +45,9 @@ void npoly_ver(){
 
 int main(){
 	init_genrand((unsigned)time(NULL));
-	dict_ver();
+	//dict_ver();
 	//list_ver();
-	//nrand_ver();
+	nrand_ver();
 	//npoly_ver();
 	return 0;
 }
