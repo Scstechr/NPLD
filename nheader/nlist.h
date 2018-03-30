@@ -22,41 +22,6 @@ typedef struct{
 	int end;
 } nlist_List;
 
-nlist_List *nlist_init();
-// returns pointer of empty nlist_List
-
-nlist_List *nlist_range(int n);
-// same as range in python
-// nlist_range(2) => [0, 1]
-
-void nlist_append(nlist_List *list, int n);
-// same as append in python
-// e.g. list = [0, 1]
-// nlist_append(list, 2) => [0, 1, 2]
-
-void nlist_insert(nlist_List *list, int index, int n);
-// same as insert in python
-// e.g. list = [0, 1]
-// nlist_insert(list, 1, 2) => [0, 2, 1]
-
-int nlist_pop(nlist_List *list);
-// same as pop in python
-// e.g. list = [0, 1]
-// nlist_pop(list) 
-// => returns 1
-// => list = [0]
-
-void nlist_clear(nlist_List *list);
-// same as clear in python
-
-void nlist_print(nlist_List *list);
-// same as print(list) in python
-// it also provides the size of list
-
-int nlist_len(nlist_List *list);
-// same as len(list) in python
-// e.g. list = [0, 1]
-// nlist_len(list) = 2
 
 nlist_List *nlist_init()
 {
@@ -67,7 +32,7 @@ nlist_List *nlist_init()
 	return list;
 }
 
-void nlist_setparam(nlist_List *list, int index, int n, int before, int after)
+static void nlist_setparam(nlist_List *list, int index, int n, int before, int after)
 {
 	if(n > INT_MIN){
 		list->data[index].item = n;
@@ -333,4 +298,5 @@ void nlist_simple_print(nlist_List *list)
 		printf("]");
 	}
 }
+
 #endif

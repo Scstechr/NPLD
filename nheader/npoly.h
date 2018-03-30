@@ -71,14 +71,16 @@ double npoly_subs(nlist_List *poly, double num)
 	return dnum;
 }
 
-void npoly_copy(nlist_List *poly1, nlist_List *poly2){
+void npoly_copy(nlist_List *poly1, nlist_List *poly2)
+{
 	assert (poly1->size <= poly2->size);
 	for(int i = 0; i < poly2->size; i++){
 		poly2->data[i].ditem = poly1->data[i].ditem;
 	}
 }
 
-void npoly_deriv(nlist_List *poly){
+void npoly_deriv(nlist_List *poly)
+{
 	assert( poly->size > 1 );
 	double coef[poly->size];
 	for(int i = 0; i < poly->size; i++) coef[i] = 0.0; 
@@ -96,7 +98,8 @@ void npoly_deriv(nlist_List *poly){
 	poly->data[poly->size].after = INT_MAX;
 }
 
-double npoly_integ(nlist_List *poly, double a, double b){
+double npoly_integ(nlist_List *poly, double a, double b)
+{
 	/* using Simpson's rule */
 	assert( b > a);
 	double value = 0.0;
@@ -106,4 +109,5 @@ double npoly_integ(nlist_List *poly, double a, double b){
 	value = ( (b - a) / 6.0 ) * ( fa + ff + fb);
 	return value;
 }
+
 #endif

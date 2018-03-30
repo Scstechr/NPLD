@@ -76,7 +76,6 @@ void nrand_dist_check(nlist_List *poly)
 			printf("\t%+.6lf\n", poly->data[i].ditem - result);
 		}
 	}
-
 }
 
 nlist_List *nrand_pick(int size, int num)
