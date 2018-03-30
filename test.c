@@ -20,6 +20,8 @@ void dict_ver(){
 		nlist_List *list = nrand_pick(100, rep[i]);
 		ndict_append(dict, list);
 	}
+	ndict_print(dict);
+	ndict_print(dict);
 }
 
 void nrand_ver(){
@@ -28,6 +30,7 @@ void nrand_ver(){
 	nlist_List *poly = npoly_init(coef, coef_size, 0);
 	ndict_Dict *dict = ndict_init();
 	nrand_dist_check(poly);
+	ndict_print(dict);
 	for(int i = 0; i < 30; i ++){
 		nlist_List *list = nrand_pick(1000, nrand_dist_pick(poly));
 		ndict_append(dict, list);
@@ -48,9 +51,9 @@ void npoly_ver(){
 
 int main(){
 	init_genrand((unsigned)time(NULL));
-	list_ver();
 	dict_ver();
-	nrand_ver();
-	npoly_ver();
+	//list_ver();
+	//nrand_ver();
+	//npoly_ver();
 	return 0;
 }

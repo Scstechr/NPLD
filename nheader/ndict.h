@@ -102,6 +102,8 @@ void ndict_print(ndict_Dict *dict){
 }
 
 ndict_Dict *ndict_range(int n){
+	/* compromised edition */
+	/* task: append empty list instead of range */
 	ndict_Dict *dict = ndict_init();
 	for (int i = 0; i < n; i++){
 		nlist_List *list = nlist_range(1);
@@ -109,4 +111,49 @@ ndict_Dict *ndict_range(int n){
 	}
 	return dict;
 }
+
+
+int ndict_index(ndict_Dict *dict, int index)
+{
+	/* transfered from nlist_index */
+	assert(dict->size > 0);
+	assert(index < dict->size);
+	int i, j;
+	if (index < dict->size / 2){
+		j = 0; i = dict->start;
+		while(j != index){
+			assert(j < dict->size);
+			i = dict->data[i].after; j++;
+		}
+	} else {
+		j = dict->size - 1; i = dict->end;
+		while(j != index){
+			assert(j > 0);
+			i = dict->data[i].before; j--;
+		}
+	}
+	return i;
+}
+
+ndict_Dict *ndict_delete(ndict_Dict *dict, int index)
+{
+	/* transfered from nlist_delete */
+	assert(index < dict->size);
+	int idx = ndict_index(dict, index);
+	nlist_List *list = nlist_range(1);
+	list->size = 0;
+	if (idx == dict->start){
+		ndict_setparam(dict, dict->data[idx].after, list, -1, INT_MIN);
+		dict->start = dict->data[idx].after;
+	} else if (idx == dict->end){
+		ndict_setparam(dict, dict->data[idx].before, list, INT_MIN, INT_MAX);
+		dict->end = dict->data[idx].before;
+	} else {
+		ndict_setparam(dict, dict->data[idx].before, list, INT_MIN, dict->data[idx].after);
+		ndict_setparam(dict, dict->data[idx].after, list, dict->data[idx].before, INT_MIN);
+	}
+	dict->size --;
+	return dict;
+}
+
 #endif
