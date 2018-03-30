@@ -282,6 +282,24 @@ nlist_List *nlist_delete(nlist_List *list, int index)
 	return list;
 }
 
+nlist_List *nlist_del_hack(nlist_List *list, int index)
+{
+	/* hacker's version of nlist_delete */
+	assert(index < list->size);
+	if (index == list->start){
+		nlist_setparam(list, list->data[index].after, INT_MIN, -1, INT_MIN);
+		list->start = list->data[index].after;
+	} else if (index == list->end){
+		nlist_setparam(list, list->data[index].before, INT_MIN, INT_MIN, INT_MAX);
+		list->end = list->data[index].before;
+	} else {
+		nlist_setparam(list, list->data[index].before, INT_MIN, INT_MIN, list->data[index].after);
+		nlist_setparam(list, list->data[index].after, INT_MIN, list->data[index].before, INT_MIN);
+	}
+	list->size --;
+	return list;
+}
+
 void nlist_simple_print(nlist_List *list)
 {
 	//nlist_sizecheck(list);

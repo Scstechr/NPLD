@@ -1,16 +1,13 @@
 #include "header.h"
 
 void list_ver(){
-	int size = 100;
-	nlist_List *list = nlist_range(7);
-	nlist_insert(list, 0, 1);
-	int index = nlist_index(list, 0);
-	printf("index:%d\n", index);
+	int size = 10;
+	nlist_List *list = nrand_pick(100, 8);
 	nlist_print(list);
-	nlist_List *rand_list = nrand_pick(100, 8);
-	nlist_print(rand_list);
+	nlist_del_hack(list, 1);
+	nlist_del_hack(list, 2);
+	nlist_print(list);
 	free(list);
-	free(rand_list);
 }
 
 void dict_ver(){
@@ -46,8 +43,8 @@ void npoly_ver(){
 int main(){
 	init_genrand((unsigned)time(NULL));
 	//dict_ver();
-	//list_ver();
-	nrand_ver();
+	list_ver();
+	//nrand_ver();
 	//npoly_ver();
 	return 0;
 }
