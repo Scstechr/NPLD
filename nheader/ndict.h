@@ -104,7 +104,7 @@ void ndict_print(ndict_Dict *dict){
 ndict_Dict *ndict_range(int n){
 	ndict_Dict *dict = ndict_init();
 	for (int i = 0; i < n; i++){
-		nlist_List *list = nlist_init();
+		nlist_List *list = nlist_range(1);
 		ndict_append(dict, list);
 	}
 	return dict;
