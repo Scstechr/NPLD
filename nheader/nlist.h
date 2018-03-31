@@ -186,13 +186,9 @@ void nlist_simple_print(nlist_List *list){
 
 void nlist_print(nlist_List *list)
 {
-	if(list->size == 0){
-		printf("\n[]\n");
-	} else {
-		printf("\nsize:%3d, int list\n", list->size);
-		nlist_simple_print(list);
-		printf("\n");
-	}
+	printf("\nsize:%3d, int list\n", list->size);
+	nlist_simple_print(list);
+	printf("\n");
 }
 
 void nlist_param(nlist_List *list)
