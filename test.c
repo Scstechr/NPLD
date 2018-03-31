@@ -4,8 +4,8 @@ void list_ver(){
 	int size = 10;
 	nlist_List *list = nrand_pick(100, 8);
 	nlist_print(list);
-	nlist_del_hack(list, 1);
-	nlist_del_hack(list, 2);
+	nlist_delete(list, 1);
+	nlist_delete(list, 2);
 	nlist_print(list);
 	free(list);
 }
