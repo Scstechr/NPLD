@@ -138,19 +138,17 @@ int ndict_index(ndict_Dict *dict, int index)
 ndict_Dict *ndict_delete(ndict_Dict *dict, int index)
 {
 	/* transfered from nlist_delete */
-	assert(index < dict->size);
-	int idx = ndict_index(dict, index);
 	nlist_List *list = nlist_range(1);
 	list->size = 0;
-	if (idx == dict->start){
-		ndict_setparam(dict, dict->data[idx].after, list, -1, INT_MIN);
-		dict->start = dict->data[idx].after;
-	} else if (idx == dict->end){
-		ndict_setparam(dict, dict->data[idx].before, list, INT_MIN, INT_MAX);
-		dict->end = dict->data[idx].before;
+	if (index == dict->start){
+		ndict_setparam(dict, dict->data[index].after, list, -1, INT_MIN);
+		dict->start = dict->data[index].after;
+	} else if (index == dict->end){
+		ndict_setparam(dict, dict->data[index].before, list, INT_MIN, INT_MAX);
+		dict->end = dict->data[index].before;
 	} else {
-		ndict_setparam(dict, dict->data[idx].before, list, INT_MIN, dict->data[idx].after);
-		ndict_setparam(dict, dict->data[idx].after, list, dict->data[idx].before, INT_MIN);
+		ndict_setparam(dict, dict->data[index].before, list, INT_MIN, dict->data[index].after);
+		ndict_setparam(dict, dict->data[index].after, list, dict->data[index].before, INT_MIN);
 	}
 	dict->size --;
 	return dict;
