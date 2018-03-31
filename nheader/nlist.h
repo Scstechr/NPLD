@@ -171,20 +171,27 @@ int nlist_len(nlist_List *list)
 	return list->size;
 }
 
+void nlist_simple_print(nlist_List *list){
+	int j = 0; // Safety
+	printf("[");
+	for(int i = list->start;
+			i != INT_MAX;
+			i = list->data[i].after){
+		assert(j < list->size);
+		printf("%3d ", list->data[i].item);
+		j++;
+	}
+	printf("]");
+}
+
 void nlist_print(nlist_List *list)
 {
-	//nlist_sizecheck(list);
 	if(list->size == 0){
 		printf("\n[]\n");
 	} else {
-		int j = 0; // Safety
-		printf("\nsize:%3d, int list\n[ ", list->size);
-		for(int i = list->start; i != INT_MAX; i = list->data[i].after){
-			assert(j < list->size);
-			printf("%3d ", list->data[i].item);
-			j++;
-		}
-		printf("]\n");
+		printf("\nsize:%3d, int list\n", list->size);
+		nlist_simple_print(list);
+		printf("\n");
 	}
 }
 
@@ -267,25 +274,6 @@ void nlist_substitute(nlist_List *list, int index, int n){
 nlist_List *nlist_delete(nlist_List *list, int index)
 {
 	assert(index < list->size);
-	int idx = nlist_index(list, index);
-	if (idx == list->start){
-		nlist_setparam(list, list->data[idx].after, INT_MIN, -1, INT_MIN);
-		list->start = list->data[idx].after;
-	} else if (idx == list->end){
-		nlist_setparam(list, list->data[idx].before, INT_MIN, INT_MIN, INT_MAX);
-		list->end = list->data[idx].before;
-	} else {
-		nlist_setparam(list, list->data[idx].before, INT_MIN, INT_MIN, list->data[idx].after);
-		nlist_setparam(list, list->data[idx].after, INT_MIN, list->data[idx].before, INT_MIN);
-	}
-	list->size --;
-	return list;
-}
-
-nlist_List *nlist_del_hack(nlist_List *list, int index)
-{
-	/* hacker's version of nlist_delete */
-	assert(index < list->size);
 	if (index == list->start){
 		nlist_setparam(list, list->data[index].after, INT_MIN, -1, INT_MIN);
 		list->start = list->data[index].after;
@@ -300,21 +288,5 @@ nlist_List *nlist_del_hack(nlist_List *list, int index)
 	return list;
 }
 
-void nlist_simple_print(nlist_List *list)
-{
-	//nlist_sizecheck(list);
-	if(list->size == 0){
-		printf("[]\n");
-	} else {
-		int j = 0; // Safety
-		printf("[");
-		for(int i = list->start; i != INT_MAX; i = list->data[i].after){
-			assert(j < list->size);
-			printf("%3d ", list->data[i].item);
-			j++;
-		}
-		printf("]");
-	}
-}
 
 #endif
