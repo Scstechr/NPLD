@@ -60,7 +60,8 @@ void npoly_print(nlist_List *poly)
 
 double npoly_subs(nlist_List *poly, double num)
 {
-	int j = 0; int k = 0; double dnum = 0.0;
+	int j = 0; 
+	double dnum = 0.0;
 	for(int i = poly->start; i != INT_MAX; i = poly->data[i].after){
 		assert(j <= poly->size);
 		if (poly->data[i].ditem != 0.0){

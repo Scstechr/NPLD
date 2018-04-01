@@ -23,6 +23,13 @@ typedef struct{
 	int size;
 } ndict_Dict;
 
+void ndict_clear(ndict_Dict *dict)
+{
+	dict->start = 0;
+	dict->end = -1;
+	dict->size = 0;
+}
+
 ndict_Dict *ndict_init()
 {
 	ndict_Dict *dict = malloc(sizeof(ndict_Dict));
@@ -34,6 +41,7 @@ ndict_Dict *ndict_init()
 
 void ndict_setparam(ndict_Dict *dict, int index, nlist_List *list, int before, int after)
 {
+	assert(index >= 0);
 	if(list->size > 0){
 		dict->data[index].list = list;
 	}
@@ -101,6 +109,20 @@ void ndict_print(ndict_Dict *dict){
 	}
 }
 
+void ndict_printd(ndict_Dict *dict){
+	if(dict->size == 0){
+		printf("empty");
+	} else {
+		int j = 0;
+		printf("\nsize:%3d, int dict w/ int list\n", dict->size);
+		for(int i = dict->start; i != INT_MAX; i = dict->data[i].after){
+			printf("i:%3d,j:%3d:", i,j);
+			nlist_simple_print(dict->data[i].list);
+			printf("\n");
+			j++;
+		}
+	}
+}
 ndict_Dict *ndict_range(int n){
 	/* compromised edition */
 	/* task: append empty list instead of range */
@@ -141,6 +163,10 @@ ndict_Dict *ndict_delete(ndict_Dict *dict, int index)
 	nlist_List *list = nlist_range(1);
 	list->size = 0;
 	if (index == dict->start){
+		if (dict->size == 1){
+			ndict_clear(dict);
+			goto end;
+		}
 		ndict_setparam(dict, dict->data[index].after, list, -1, INT_MIN);
 		dict->start = dict->data[index].after;
 	} else if (index == dict->end){
@@ -151,6 +177,8 @@ ndict_Dict *ndict_delete(ndict_Dict *dict, int index)
 		ndict_setparam(dict, dict->data[index].after, list, dict->data[index].before, INT_MIN);
 	}
 	dict->size --;
+end:
+	free(dict->data[index].list);
 	return dict;
 }
 

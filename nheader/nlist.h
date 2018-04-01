@@ -22,6 +22,13 @@ typedef struct{
 	int end;
 } nlist_List;
 
+void nlist_clear(nlist_List *list){
+	list->size = 0;
+	list->start = 0;
+	list->end = -1;
+	list->data[0].before = -1;
+	list->data[0].after = INT_MAX;
+}
 
 nlist_List *nlist_init()
 {
@@ -148,13 +155,6 @@ nlist_List *nlist_ones(int n){
 	return list;
 }
 
-void nlist_clear(nlist_List *list){
-	list->size = 0;
-	list->start = 0;
-	list->end = 0;
-	list->data[0].before = -1;
-	list->data[0].after = INT_MAX;
-}
 
 int nlist_pop(nlist_List *list)
 {
@@ -174,12 +174,12 @@ int nlist_len(nlist_List *list)
 void nlist_simple_print(nlist_List *list){
 	int j = 0; // Safety
 	printf("[");
-	for(int i = list->start;
-			i != INT_MAX;
-			i = list->data[i].after){
-		assert(j < list->size);
-		printf("%3d ", list->data[i].item);
-		j++;
+	if (list->size > 0){
+		for(int i = list->start; i != INT_MAX; i = list->data[i].after){
+			assert(j < list->size);
+			printf("%3d ", list->data[i].item);
+			j++;
+		}
 	}
 	printf("]");
 }

@@ -96,7 +96,7 @@ narray_Array *narray_hsum(narray_Array *array){
 	// Horizontally sums all the elements
 	// Returns n*1 narray_Array
 	int n = array->column_size;
-	int m = array->row_size;
+	//int m = array->row_size;
 	int sum;
 	narray_Array *ret_array = narray_unformat(n, 1);
 	for(int column = 0; column < n; column ++){
