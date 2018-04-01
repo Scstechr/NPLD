@@ -101,6 +101,20 @@ void ndict_print(ndict_Dict *dict){
 	}
 }
 
+void ndict_printd(ndict_Dict *dict){
+	if(dict->size == 0){
+		printf("empty");
+	} else {
+		int j = 0;
+		printf("\nsize:%3d, int dict w/ int list\n", dict->size);
+		for(int i = dict->start; i != INT_MAX; i = dict->data[i].after){
+			printf("i:%3d,j:%3d:", i,j);
+			nlist_simple_print(dict->data[i].list);
+			printf("\n");
+			j++;
+		}
+	}
+}
 ndict_Dict *ndict_range(int n){
 	/* compromised edition */
 	/* task: append empty list instead of range */
@@ -138,19 +152,17 @@ int ndict_index(ndict_Dict *dict, int index)
 ndict_Dict *ndict_delete(ndict_Dict *dict, int index)
 {
 	/* transfered from nlist_delete */
-	assert(index < dict->size);
-	int idx = ndict_index(dict, index);
 	nlist_List *list = nlist_range(1);
 	list->size = 0;
-	if (idx == dict->start){
-		ndict_setparam(dict, dict->data[idx].after, list, -1, INT_MIN);
-		dict->start = dict->data[idx].after;
-	} else if (idx == dict->end){
-		ndict_setparam(dict, dict->data[idx].before, list, INT_MIN, INT_MAX);
-		dict->end = dict->data[idx].before;
+	if (index == dict->start){
+		ndict_setparam(dict, dict->data[index].after, list, -1, INT_MIN);
+		dict->start = dict->data[index].after;
+	} else if (index == dict->end){
+		ndict_setparam(dict, dict->data[index].before, list, INT_MIN, INT_MAX);
+		dict->end = dict->data[index].before;
 	} else {
-		ndict_setparam(dict, dict->data[idx].before, list, INT_MIN, dict->data[idx].after);
-		ndict_setparam(dict, dict->data[idx].after, list, dict->data[idx].before, INT_MIN);
+		ndict_setparam(dict, dict->data[index].before, list, INT_MIN, dict->data[index].after);
+		ndict_setparam(dict, dict->data[index].after, list, dict->data[index].before, INT_MIN);
 	}
 	dict->size --;
 	return dict;
