@@ -72,6 +72,8 @@ void nlist_append(nlist_List *list, int n)
 	}
 
 	nlist_setparam(list, list->size, n, list->end, INT_MAX);
+	list->data[list->size].idx = list->size;
+	printf("list->data[list->size].idx = %d\n", list->data[list->size].idx);
 	
 	list->end = list->size;
 	list->size++;
@@ -79,45 +81,6 @@ void nlist_append(nlist_List *list, int n)
 	assert(list->size < STACK_SIZE);
 }
 
-void nlist_insert(nlist_List *list, int index, int n)
-{
-	assert(index < list->size);
-	if (index == 0){
-		nlist_setparam(list, list->size, n, list->data[list->end].before, list->end);
-		if(list->size == 0){
-			list->data[list->size].after = INT_MAX;
-			list->end = 0;
-		} else {
-			list->data[list->size].after = list->start;
-			if(list->size == 1){
-				list->data[list->size].before = -1;
-				nlist_setparam(list, list->end, INT_MIN, list->size, INT_MIN); 
-			} else {
-				list->data[list->size].before = -1;
-				list->data[list->start].before = list->size;
-			}
-		}
-		list->start = list->size;
-	} else {
-		int i = list->start; int k = 0;
-		for(int j = 1; j < index; j++){
-			assert(j < STACK_SIZE);
-			i = list->data[i].after;
-		}
-		if (index == list->size) {
-			k = i;
-		} else {
-			k = list->data[i].after;
-		}
-		nlist_setparam(list, list->size, n, list->data[k].before, k);
-		//INT_MIN -> NO CHANGE
-		nlist_setparam(list, list->data[k].before, INT_MIN, INT_MIN, list->size);
-		nlist_setparam(list, k, INT_MIN, list->size, INT_MIN);
-
-	}
-	list->size++;
-	assert(list->size < STACK_SIZE);
-}
 
 
 nlist_List *nlist_range(int n){
@@ -127,6 +90,7 @@ nlist_List *nlist_range(int n){
 	list->start = 0;
 	for(int i = 0; i < n; i++){
 		nlist_setparam(list, i, i, i-1, i+1);
+		list->data[i].idx = i;
 	}
 	list->data[list->end].after = INT_MAX;
 	return list;
@@ -260,6 +224,52 @@ int nlist_index(nlist_List *list, int index)
 	return i;
 }
 
+void nlist_insert(nlist_List *list, int index, int n)
+{
+	assert(index < list->size);
+	if (index == 0){
+		nlist_setparam(list, list->size, n, list->data[list->end].before, list->end);
+		if(list->size == 0){
+			list->data[list->size].after = INT_MAX;
+			list->end = 0;
+		} else {
+			list->data[list->size].after = list->start;
+			if(list->size == 1){
+				list->data[list->size].before = -1;
+				nlist_setparam(list, list->end, INT_MIN, list->size, INT_MIN); 
+			} else {
+				list->data[list->size].before = -1;
+				list->data[list->start].before = list->size;
+			}
+		}
+		list->start = list->size;
+	} else {
+		int i = list->start; int k = 0;
+		for(int j = 1; j < index; j++){
+			assert(j < STACK_SIZE);
+			i = list->data[i].after;
+		}
+		if (index == list->size) {
+			k = i;
+		} else {
+			k = list->data[i].after;
+		}
+		nlist_setparam(list, list->size, n, list->data[k].before, k);
+		//INT_MIN -> NO CHANGE
+		nlist_setparam(list, list->data[k].before, INT_MIN, INT_MIN, list->size);
+		nlist_setparam(list, k, INT_MIN, list->size, INT_MIN);
+
+	}
+	int j; j = 0;
+	for(int i = list->size;
+			i != INT_MAX;
+			i = list->data[i].after){
+		list->data[i].idx = index + j;
+		j++;
+	}
+	list->size++;
+	assert(list->size < STACK_SIZE);
+}
 void nlist_substitute(nlist_List *list, int index, int n){
 	assert(list->size > 0);
 	assert(index < list->size);

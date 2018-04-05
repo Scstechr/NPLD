@@ -4,9 +4,16 @@ void list_ver(){
 	int size = 100;
 	nlist_List *list = nlist_range(7);
 	nlist_insert(list, 0, 1);
+	nlist_insert(list, 2, 3);
 	int index = nlist_index(list, 0);
 	printf("index:%d\n", index);
 	nlist_print(list);
+	for(int i = list->start;
+			i != INT_MAX;
+			i = list->data[i].after){
+		printf("item:%d idx: %d\n", list->data[i].item, list->data[i].idx);
+	}
+	printf("\n");
 	nlist_List *rand_list = nrand_pick(100, 8);
 	nlist_print(rand_list);
 	free(list);
@@ -49,8 +56,8 @@ void npoly_ver(){
 int main(){
 	init_genrand((unsigned)time(NULL));
 	list_ver();
-	dict_ver();
-	nrand_ver();
-	npoly_ver();
+	//dict_ver();
+	//nrand_ver();
+	//npoly_ver();
 	return 0;
 }
