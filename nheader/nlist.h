@@ -10,6 +10,7 @@
 
 typedef struct{
 	int item;
+	int idx;
 	double ditem;
 	int before;
 	int after;
