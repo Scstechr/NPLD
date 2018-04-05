@@ -94,13 +94,6 @@ nlist_List *nrand_pick(int size, int num)
 	return list;
 }	
 
-<<<<<<< HEAD
-nlist_List *nrand_pick_a(int size, int num, int *range)
-{
-	/* implementation of slower version */
-	assert(size >= num && size > 0 && num > 0);
-	nlist_List *list = nlist_init();
-=======
 void nrand_pick_array(int size, int num, int *slot, int *range)
 {
 	/* implementation of faster version */
@@ -116,28 +109,6 @@ void nrand_pick_array(int size, int num, int *slot, int *range)
 	}
 }	
 
-void nrand_pick_array2(int size, int num, int *slot)
-{
-	/* without range */
-	/* implementation of slower version */
-	assert(size >= num && size > 0 && num > 0);
-	int range[size];
-	for(int i = 0; i < size; i++) range[i] = i;
-	int j = 0;
->>>>>>> master
-	for(int i = size - 1; i >= size - num; i--){
-		int randnum = genrand_int32()%i;
-		int temp = range[randnum];
-		range[randnum] = range[i];
-<<<<<<< HEAD
-		nlist_append(list, temp);
-	}
-	return list;
-=======
-		slot[j] = temp; j++;
-	}
->>>>>>> master
-}	
 nlist_List *nrand_shuffle(nlist_List *list)
 {
 	assert (list->size > 0);

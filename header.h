@@ -12,6 +12,5 @@
 #include "./debugg.h"
 #include "./MT.h"
 #include "./nheader/nheader.h"
-#include "./wm_nheader/wm_header.h"
 
 #endif
