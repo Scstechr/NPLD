@@ -1,45 +1,22 @@
 /* nrandom.h */
 /* Header Dedicated to Random Related Subjects */
 /* requires nlist.h */
-#ifndef NRANDOM_H
-#define NRANDOM_H
+#ifndef WM_NRANDOM_H
+#define WM_NRANDOM_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
-#include <limits.h>
+#include "../header.h"
 
-#include "nlist.h"
-#include "npoly.h"
-
-int nrand_dist_pick(nlist_List *poly)
-{
-	int j = 0; double sum = 0.0; double min = 0.0; double max = 0.0;
-	double rand = genrand_real1();
-	for(int i = poly->start; i != INT_MAX; i = poly->data[i].after){
-		if (poly->data[i].ditem != 0.0){
-			sum += poly->data[i].ditem;
-			max = sum;
-			if (min < rand && rand < max) break; 
-			min = sum;
-		}
-		j++;
-	}
-	return j;
-}
-
-static nlist_List *nrand_loop(nlist_List *poly, int trial){
-	nlist_List *list = nlist_zeros(poly->size);
+void wm_nrand_loop(nlist_List *list, nlist_List *poly, int trial){
+	wm_nlist_zeros(list, poly->size);
 	int j = 0; int sum = 0;
 	for(int i = 0; i < trial; i++){
 		j = nrand_dist_pick(poly);
 		sum = list->data[j].item + 1;
 		nlist_substitute(list, j, sum);  
 	}
-	return list;
 }
 
-static void nrand_loop2(nlist_List *list, nlist_List *poly,
+void wm_nrand_loop2(nlist_List *list, nlist_List *poly,
 		                double *max, double *min, double *sum,
 						int trial){
 	for(int i = poly->start; i != INT_MAX; i = poly->data[i].after){
@@ -51,11 +28,6 @@ static void nrand_loop2(nlist_List *list, nlist_List *poly,
 			if (min[i] > result) min[i] = result;
 		}
 	}
-}
-
-static void nrand_dist_head(nlist_List *poly, int trial){
-	printf("objective:\t"); npoly_print(poly);
-	printf("trial:\t\t%d\nresult:\n", trial);
 }
 
 void nrand_dist_check(nlist_List *poly)
@@ -94,49 +66,18 @@ nlist_List *nrand_pick(int size, int num)
 	return list;
 }	
 
-<<<<<<< HEAD
 nlist_List *nrand_pick_a(int size, int num, int *range)
 {
 	/* implementation of slower version */
 	assert(size >= num && size > 0 && num > 0);
 	nlist_List *list = nlist_init();
-=======
-void nrand_pick_array(int size, int num, int *slot, int *range)
-{
-	/* implementation of faster version */
-	/* requires range array from outside */
-	assert(size >= num && size > 0 && num > 0);
-	int j = 0;
 	for(int i = size - 1; i >= size - num; i--){
 		int randnum = genrand_int32()%i;
 		int temp = range[randnum];
 		range[randnum] = range[i];
-		range[i] = temp;
-		slot[j] = temp; j++;
-	}
-}	
-
-void nrand_pick_array2(int size, int num, int *slot)
-{
-	/* without range */
-	/* implementation of slower version */
-	assert(size >= num && size > 0 && num > 0);
-	int range[size];
-	for(int i = 0; i < size; i++) range[i] = i;
-	int j = 0;
->>>>>>> master
-	for(int i = size - 1; i >= size - num; i--){
-		int randnum = genrand_int32()%i;
-		int temp = range[randnum];
-		range[randnum] = range[i];
-<<<<<<< HEAD
 		nlist_append(list, temp);
 	}
 	return list;
-=======
-		slot[j] = temp; j++;
-	}
->>>>>>> master
 }	
 nlist_List *nrand_shuffle(nlist_List *list)
 {

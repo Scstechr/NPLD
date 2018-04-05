@@ -28,6 +28,9 @@ void ndict_clear(ndict_Dict *dict)
 	dict->start = 0;
 	dict->end = -1;
 	dict->size = 0;
+	for(int i = 0; i < STACK_SIZE; i++){
+		nlist_clear(dict->data[i].list);
+	}
 }
 
 ndict_Dict *ndict_init()
@@ -36,6 +39,9 @@ ndict_Dict *ndict_init()
 	dict->start = 0;
 	dict->end = -1;
 	dict->size = 0;
+	for(int i = 0; i < STACK_SIZE; i++){
+		dict->data[i].list = nlist_init();
+	}
 	return dict;
 }
 
@@ -45,6 +51,17 @@ void ndict_setparam(ndict_Dict *dict, int index, nlist_List *list, int before, i
 	if(list->size > 0){
 		dict->data[index].list = list;
 	}
+	if(before > INT_MIN){
+		dict->data[index].before = before;
+	}
+	if(after > INT_MIN){
+		dict->data[index].after = after;
+	}
+}
+
+void ndict_setparam_nolist(ndict_Dict *dict, int index, int before, int after)
+{
+	assert(index >= 0);
 	if(before > INT_MIN){
 		dict->data[index].before = before;
 	}
@@ -93,13 +110,32 @@ void ndict_append(ndict_Dict *dict, nlist_List *list){
 	dict->size++;
 }
 	
+void ndict_append_nolist(ndict_Dict *dict){
+	if(dict->end > 0){
+		dict->data[dict->end].after = dict->size;
+	} else {
+		dict->data[0].after = dict->size;
+	}
+
+	ndict_setparam_nolist(dict, dict->size, dict->end, INT_MAX);
+
+	dict->end = dict->size;
+	dict->size++;
+}
+
+void ndict_clear_size(ndict_Dict *dict, int size, int flag){
+	dict->start = 0;
+	dict->end = -1;
+	if(flag > 0) dict->size = 0;
+	for(int i = 0; i < size; i++){
+		nlist_clear(dict->data[i].list);
+	}
+}
 
 void ndict_print(ndict_Dict *dict){
-	if(dict->size == 0){
-		printf("empty");
-	} else {
+	printf("\nsize:%3d, int dict w/ int list\n", dict->size);
+	if(dict->size != 0){
 		int j = 0;
-		printf("\nsize:%3d, int dict w/ int list\n", dict->size);
 		for(int i = dict->start; i != INT_MAX; i = dict->data[i].after){
 			printf("%3d:", j);
 			nlist_simple_print(dict->data[i].list);
@@ -110,13 +146,26 @@ void ndict_print(ndict_Dict *dict){
 }
 
 void ndict_printd(ndict_Dict *dict){
-	if(dict->size == 0){
-		printf("empty");
-	} else {
+	printf("\nsize:%3d, int dict w/ int list\n", dict->size);
+	printf("  i,  j\n");
+	if(dict->size != 0){
 		int j = 0;
-		printf("\nsize:%3d, int dict w/ int list\n", dict->size);
 		for(int i = dict->start; i != INT_MAX; i = dict->data[i].after){
-			printf("i:%3d,j:%3d:", i,j);
+			printf("%3d,%3d:", i,j);
+			nlist_simple_print(dict->data[i].list);
+			printf("\n");
+			j++;
+		}
+	}
+}
+
+void ndict_printd2(ndict_Dict *dict){
+	printf("\nsize:%3d, int dict w/ int list\n", dict->size);
+	printf("  i,  j, size:list\n");
+	if(dict->size != 0){
+		int j = 0;
+		for(int i = dict->start; i != INT_MAX; i = dict->data[i].after){
+			printf("%3d,%3d,%5d:", i,j, dict->data[i].list->size);
 			nlist_simple_print(dict->data[i].list);
 			printf("\n");
 			j++;
@@ -128,8 +177,7 @@ ndict_Dict *ndict_range(int n){
 	/* task: append empty list instead of range */
 	ndict_Dict *dict = ndict_init();
 	for (int i = 0; i < n; i++){
-		nlist_List *list = nlist_range(1);
-		ndict_append(dict, list);
+		ndict_append_nolist(dict);
 	}
 	return dict;
 }
@@ -160,25 +208,22 @@ int ndict_index(ndict_Dict *dict, int index)
 ndict_Dict *ndict_delete(ndict_Dict *dict, int index)
 {
 	/* transfered from nlist_delete */
-	nlist_List *list = nlist_range(1);
-	list->size = 0;
 	if (index == dict->start){
 		if (dict->size == 1){
 			ndict_clear(dict);
 			goto end;
 		}
-		ndict_setparam(dict, dict->data[index].after, list, -1, INT_MIN);
+		ndict_setparam_nolist(dict, dict->data[index].after, -1, INT_MIN);
 		dict->start = dict->data[index].after;
 	} else if (index == dict->end){
-		ndict_setparam(dict, dict->data[index].before, list, INT_MIN, INT_MAX);
+		ndict_setparam_nolist(dict, dict->data[index].before, INT_MIN, INT_MAX);
 		dict->end = dict->data[index].before;
 	} else {
-		ndict_setparam(dict, dict->data[index].before, list, INT_MIN, dict->data[index].after);
-		ndict_setparam(dict, dict->data[index].after, list, dict->data[index].before, INT_MIN);
+		ndict_setparam_nolist(dict, dict->data[index].before, INT_MIN, dict->data[index].after);
+		ndict_setparam_nolist(dict, dict->data[index].after, dict->data[index].before, INT_MIN);
 	}
 	dict->size --;
 end:
-	free(dict->data[index].list);
 	return dict;
 }
 
