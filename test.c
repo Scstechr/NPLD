@@ -1,23 +1,9 @@
 #include "header.h"
 
 void list_ver(){
-	int size = 100;
-	nlist_List *list = nlist_range(7);
-	nlist_insert(list, 0, 1);
-	nlist_insert(list, 2, 3);
-	int index = nlist_index(list, 0);
-	printf("index:%d\n", index);
+	nlist_List *list = nlist_linspace(0, 20, 2);
 	nlist_print(list);
-	for(int i = list->start;
-			i != INT_MAX;
-			i = list->data[i].after){
-		printf("item:%d idx: %d\n", list->data[i].item, list->data[i].idx);
-	}
-	printf("\n");
-	nlist_List *rand_list = nrand_pick(100, 8);
-	nlist_print(rand_list);
 	free(list);
-	free(rand_list);
 }
 
 void dict_ver(){

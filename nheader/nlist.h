@@ -312,5 +312,29 @@ nlist_List *nlist_delete(nlist_List *list, int index)
 	return list;
 }
 
+nlist_List *nlist_linspace(int start, int end, int step){
+	assert (start > INT_MIN);
+	assert (end < INT_MAX);
+	/* size check */
+	double size; size = (double)(end - start)/step;
+	assert (size < STACK_SIZE);
+
+	/* step check */
+	if (start > end){
+		assert( step < 0 );
+	} else {
+		assert( step > 0 );
+	} 
+
+	nlist_List *list = nlist_init();
+	if (start != end){
+		for(int i = start; i < end; i += step){
+			nlist_append(list, i);
+		}
+	} else {
+		nlist_clear(list);
+	}
+	return list;
+}
 
 #endif
