@@ -1,7 +1,7 @@
 #include "header.h"
 
 void list_ver(){
-	nlist_List *list = nlist_linspace(0, 20, 2);
+	nlist_List *list = nlist_linspace(20, 0, -2);
 	nlist_print(list);
 	free(list);
 }

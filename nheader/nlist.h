@@ -328,8 +328,24 @@ nlist_List *nlist_linspace(int start, int end, int step){
 
 	nlist_List *list = nlist_init();
 	if (start != end){
-		for(int i = start; i < end; i += step){
-			nlist_append(list, i);
+		if (end > 0){
+			for(int i = start; i < end; i += step){
+				nlist_append(list, i);
+			}
+		} else if (end < 0){
+			for(int i = start; i > end; i += step){
+				nlist_append(list, i);
+			}
+		} else { // end = 0
+			if (start < 0){
+				for(int i = start; i < 0; i += step){
+					nlist_append(list, i);
+				}
+			} else {
+				for(int i = start; i > 0; i += step){
+					nlist_append(list, i);
+				}
+			}
 		}
 	} else {
 		nlist_clear(list);
