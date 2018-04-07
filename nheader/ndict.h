@@ -35,7 +35,7 @@ void ndict_clear(ndict_Dict *dict)
 
 ndict_Dict *ndict_init()
 {
-	ndict_Dict *dict = malloc(sizeof(ndict_Dict));
+	ndict_Dict *dict = calloc(STACK_SIZE, sizeof(ndict_Dict));
 	dict->start = 0;
 	dict->end = -1;
 	dict->size = 0;

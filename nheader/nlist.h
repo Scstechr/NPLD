@@ -40,8 +40,24 @@ nlist_List *nlist_init()
 	return list;
 }
 
+void printt(int item){
+	if (item > INT_MIN) printf("%3d\t", item);
+	else printf("XXX\t");
+}
+
+void nlist_print_param(int index, int n, int before, int after){
+	printf("index:");printt(index);
+	printf("n:");printt(n);
+	printf("before:");printt(before);
+	printf("after:");printt(after);
+	printf("\n");
+}
+
 static void nlist_setparam(nlist_List *list, int index, int n, int before, int after)
 {
+
+	/* for debugging */
+	// nlist_print_param(index, n, before, after);
 	if(n > INT_MIN){
 		list->data[index].item = n;
 	}
@@ -63,8 +79,6 @@ void nlist_sizecheck(nlist_List *list)
 
 void nlist_append(nlist_List *list, int n)
 {
-	//printf("%d\n", list->end);
-	//printf("%d\n", list->size);
 	if(list->end > 0){
 		list->data[list->end].after = list->size;
 	} else {
@@ -73,7 +87,6 @@ void nlist_append(nlist_List *list, int n)
 
 	nlist_setparam(list, list->size, n, list->end, INT_MAX);
 	list->data[list->size].idx = list->size;
-	printf("list->data[list->size].idx = %d\n", list->data[list->size].idx);
 	
 	list->end = list->size;
 	list->size++;
@@ -280,18 +293,22 @@ void nlist_substitute(nlist_List *list, int index, int n){
 
 nlist_List *nlist_delete(nlist_List *list, int index)
 {
-	assert(index < list->size);
-	if (index == list->start){
-		nlist_setparam(list, list->data[index].after, INT_MIN, -1, INT_MIN);
-		list->start = list->data[index].after;
-	} else if (index == list->end){
-		nlist_setparam(list, list->data[index].before, INT_MIN, INT_MIN, INT_MAX);
-		list->end = list->data[index].before;
+	//assert(index < list->size);
+	if (list->size == 1){
+		nlist_clear(list);
 	} else {
-		nlist_setparam(list, list->data[index].before, INT_MIN, INT_MIN, list->data[index].after);
-		nlist_setparam(list, list->data[index].after, INT_MIN, list->data[index].before, INT_MIN);
+		if (index == list->start){
+			nlist_setparam(list, list->data[index].after, INT_MIN, -1, INT_MIN);
+			list->start = list->data[index].after;
+		} else if (index == list->end){
+			nlist_setparam(list, list->data[index].before, INT_MIN, INT_MIN, INT_MAX);
+			list->end = list->data[index].before;
+		} else {
+			nlist_setparam(list, list->data[index].before, INT_MIN, INT_MIN, list->data[index].after);
+			nlist_setparam(list, list->data[index].after, INT_MIN, list->data[index].before, INT_MIN);
+		}
+		list->size --;
 	}
-	list->size --;
 	return list;
 }
 
