@@ -7,11 +7,11 @@
 #include <time.h>
 #include <math.h>
 #include <limits.h>
+#include <unistd.h>
 
 #include "./define.h"
 #include "./debugg.h"
 #include "./MT.h"
 #include "./nheader/nheader.h"
-#include "./pmf.h"
 
 #endif

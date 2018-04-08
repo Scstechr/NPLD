@@ -352,5 +352,4 @@ nlist_List *nlist_linspace(int start, int end, int step){
 	}
 	return list;
 }
-
 #endif
