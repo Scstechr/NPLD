@@ -93,11 +93,11 @@ nlist_List *nrand_pick(int size, int num)
 	}
 	return list;
 }	
-
-void nrand_pick_array(int size, int num, int *slot, int *range)
-{
+void nrand_pick_void(nlist_List *list, int size, int num, int *range){
 	/* implementation of faster version */
 	/* requires range array from outside */
+	/* a bit specialized version */ 
+
 	assert(size >= num && size > 0 && num > 0);
 	int j = 0;
 	for(int i = size - 1; i >= size - num; i--){
@@ -105,9 +105,9 @@ void nrand_pick_array(int size, int num, int *slot, int *range)
 		int temp = range[randnum];
 		range[randnum] = range[i];
 		range[i] = temp;
-		slot[j] = temp; j++;
+		nlist_append(list, temp);
 	}
-}	
+}
 
 nlist_List *nrand_shuffle(nlist_List *list)
 {
