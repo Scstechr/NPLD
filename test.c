@@ -1,9 +1,12 @@
 #include "header.h"
 
 void list_ver(){
-	nlist_List *list = nlist_linspace(20, 0, -2);
-	nlist_print(list);
-	free(list);
+	nlist_List *a = nlist_linspace(0, 800, 100);
+	nlist_List *b = nlist_linspace(800, 1000, 10);
+	nlist_print(a);
+	nlist_print(b);
+	nlist_conc(a, b);
+	nlist_print(a);
 }
 
 void dict_ver(){

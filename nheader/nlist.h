@@ -349,4 +349,15 @@ nlist_List *nlist_linspace(int start, int end, int step){
 	}
 	return list;
 }
+
+void nlist_conc(nlist_List *a, nlist_List *b){
+	int size = a->size + b->size;
+	assert (size < STACK_SIZE);
+	for(int i = b->start;
+			i != INT_MAX;
+			i = b->data[i].after){
+		nlist_append(a, b->data[i].item);
+	}
+}
+
 #endif
