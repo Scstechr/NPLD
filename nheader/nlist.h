@@ -3,10 +3,7 @@
 #ifndef NLIST_H
 #define NLIST_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
-#include <limits.h>
+#include "../header.h"
 
 typedef struct{
 	int item;
