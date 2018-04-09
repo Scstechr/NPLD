@@ -51,5 +51,5 @@ int main(){
 
 #### `npoly.h`
 
-- Header file for handling polynomial equiations.
+- Header file for handling polynomial equations.
 - Requires `nlist.h`.
