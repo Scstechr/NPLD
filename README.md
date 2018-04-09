@@ -20,10 +20,6 @@
 // www.sat.t.u-tokyo.ac.jp/~omi/random_variables_generation.html
 include "MT.h"
 
-// The maximum value for my machine
-// May differ in every environment
-#define STACK_SIZE 10836
-
 int main(){
 	/* SOME CODES */
 	/* please free(list) afterwards */
