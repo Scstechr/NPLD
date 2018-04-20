@@ -140,7 +140,7 @@ void ndict_print(ndict_Dict *dict, int idx, int idx2, int idx3){
 	if (dict->size == 0) {
 		printf("\n** empty dict **\n");
 	} else {
-		printf("\nsize:%3d, int dict w/ int list\n", dict->size);
+		printf("\nsize:%3d, dict w/ int list\n", dict->size);
 		if (idx == 1) { printf("  i,"); }
 		if (idx2 == 1) { printf("  j,"); }
 		if (idx3 == 1) { printf(" size,"); }
