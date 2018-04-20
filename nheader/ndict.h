@@ -132,46 +132,33 @@ void ndict_clear_size(ndict_Dict *dict, int size, int flag){
 	}
 }
 
-void ndict_print(ndict_Dict *dict){
-	printf("\nsize:%3d, int dict w/ int list\n", dict->size);
-	if(dict->size != 0){
-		int j = 0;
-		for(int i = dict->start; i != INT_MAX; i = dict->data[i].after){
-			printf("%3d:", j);
-			nlist_simple_print(dict->data[i].list);
-			printf("\n");
-			j++;
+void ndict_print(ndict_Dict *dict, int idx, int idx2, int idx3){
+	assert(idx == 0 || idx == 1);
+	assert(idx2 == 0 || idx2 == 1);
+	assert(idx3 == 0 || idx3 == 1);
+	// flag idx = i, idx2 = j, idx3 = size
+	if (dict->size == 0) {
+		printf("\n** empty dict **\n");
+	} else {
+		printf("\nsize:%3d, int dict w/ int list\n", dict->size);
+		if (idx == 1) { printf("  i,"); }
+		if (idx2 == 1) { printf("  j,"); }
+		if (idx3 == 1) { printf(" size,"); }
+		printf("list\n");
+		if(dict->size != 0){
+			int j = 0;
+			for(int i = dict->start; i != INT_MAX; i = dict->data[i].after){
+				if (idx == 1) printf("%3d,",i);
+				if (idx2 == 1) printf("%3d,",j);
+				if (idx3 == 1) printf("%5d,",dict->data[i].list->size);
+				nlist_simple_print(dict->data[i].list);
+				printf("\n");
+				j++;
+			}
 		}
 	}
 }
 
-void ndict_printd(ndict_Dict *dict){
-	printf("\nsize:%3d, int dict w/ int list\n", dict->size);
-	printf("  i,  j\n");
-	if(dict->size != 0){
-		int j = 0;
-		for(int i = dict->start; i != INT_MAX; i = dict->data[i].after){
-			printf("%3d,%3d:", i,j);
-			nlist_simple_print(dict->data[i].list);
-			printf("\n");
-			j++;
-		}
-	}
-}
-
-void ndict_printd2(ndict_Dict *dict){
-	printf("\nsize:%3d, int dict w/ int list\n", dict->size);
-	printf("  i,  j, size:list\n");
-	if(dict->size != 0){
-		int j = 0;
-		for(int i = dict->start; i != INT_MAX; i = dict->data[i].after){
-			printf("%3d,%3d,%5d:", i,j, dict->data[i].list->size);
-			nlist_simple_print(dict->data[i].list);
-			printf("\n");
-			j++;
-		}
-	}
-}
 ndict_Dict *ndict_range(int n){
 	/* compromised edition */
 	/* task: append empty list instead of range */
@@ -181,7 +168,6 @@ ndict_Dict *ndict_range(int n){
 	}
 	return dict;
 }
-
 
 int ndict_index(ndict_Dict *dict, int index)
 {

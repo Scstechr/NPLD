@@ -91,8 +91,6 @@ void nlist_append(nlist_List *list, int n)
 	assert(list->size < STACK_SIZE);
 }
 
-
-
 nlist_List *nlist_range(int n){
 	nlist_List *list = (nlist_List*)malloc(sizeof(nlist_List));
 	list->size = n;

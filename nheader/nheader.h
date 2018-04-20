@@ -6,5 +6,6 @@
 #include "npoly.h"
 #include "nrandom.h"
 #include "nutil.h"
+#include "ndouble.h"
 
 #endif

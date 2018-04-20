@@ -45,12 +45,12 @@ void npoly_print(nlist_List *poly)
 			if(k == 0 ){
 				k++;
 				if (poly->data[i].ditem > 0){
-					printf("%.3lfx^{%d}", poly->data[i].ditem, j);
+					printf("%.5lfx^{%d}", poly->data[i].ditem, j);
 				} else {
-					printf("-%.3lfx^{%d}", poly->data[i].ditem, j);
+					printf("-%.5lfx^{%d}", poly->data[i].ditem, j);
 				}
 			} else {
-				printf("%+.3lfx^{%d}", poly->data[i].ditem, j);
+				printf("%+.5lfx^{%d}", poly->data[i].ditem, j);
 			}
 		}
 		j++;
