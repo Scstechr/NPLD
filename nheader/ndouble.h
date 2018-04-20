@@ -42,6 +42,13 @@ void nlist_simple_print_dbl(nlist_List *list){
 	printf("\b]");
 }
 
+void nlist_print_dbl(nlist_List *list)
+{
+	printf("\nsize:%3d, double list\n", list->size);
+	nlist_simple_print_dbl(list);
+	printf("\n");
+}
+
 void nlist_append_dbl(nlist_List *list, double n)
 {
 	if(list->end > 0){
@@ -71,7 +78,8 @@ void ndict_print_dbl(ndict_Dict *dict, int idx, int idx2, int idx3){
 		if (idx == 1) { printf("  i,"); }
 		if (idx2 == 1) { printf("  j,"); }
 		if (idx3 == 1) { printf(" size,"); }
-		printf("list\n");
+		if (idx == 1 || idx2 == 1 || idx3 == 1) { printf("list"); }
+		printf("\n");
 		if(dict->size != 0){
 			int j = 0;
 			for(int i = dict->start; i != INT_MAX; i = dict->data[i].after){
