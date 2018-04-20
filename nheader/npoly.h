@@ -30,13 +30,9 @@ nlist_List *npoly_init(double *coeff, int coeff_size, int d_check)
 		j++;
 	}
 	if (d_check == 0) {
-		if (sum != 1.0){
-			if (sum >= 0.99999999 && sum <= 1.00000001){
-				;
-			} else {
-				printf("\tNPOLY_INIT ERROR SUM: %.16lf\n", sum);
-				assert(0);
-			}
+		if (sum <= 0.99999999 && sum >= 1.00000001){
+			printf("\tNPOLY_INIT ERROR SUM: %.16lf\n", sum);
+			assert(0);
 		}
 	}
 	return poly;
