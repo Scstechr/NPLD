@@ -142,8 +142,11 @@ void nrand_shuffle_ex(nlist_List *list, int *array, int size, int ex){
 			    i != list->start;
 					i = list->data[i].before){
 		int randnum = genrand_int32()%i;
-		while (randnum == ex) randnum = genrand_int32()%i;
 		int temp = list->data[randnum].item;
+		while (temp == ex) {
+			randnum = genrand_int32()%i;
+		  temp = list->data[randnum].item;
+		}
 		list->data[randnum].item = list->data[i].item;
 		list->data[i].item = temp;
 		if (j < size){
