@@ -358,4 +358,33 @@ void nlist_conc(nlist_List *a, nlist_List *b){
 	}
 }
 
+void exclusion(nlist_List *range, int size, int index){
+	// this only works with sorted list generated w/ range func. //
+	if(index == 0){
+		range->start = 1;
+		range->size --;
+	} else if (index == size - 1){
+		range->end = index - 1;
+		range->data[index - 1].after = INT_MAX;
+		range->size --;
+	} else {
+		range->data[index-1].after = index + 1;
+		range->data[index+1].before = index - 1;
+		range->size --;
+	}
+}
+
+void inclusion(nlist_List *range, int size, int index){
+	// this only works with sorted list generated w/ range func. //
+	if(index == 0){
+		range->start = 0;
+		range->size ++;
+	} else if (index == size - 1){
+		;
+	} else {
+		range->data[index-1].after = index;
+		range->data[index+1].before = index;
+		range->size ++;
+	}
+}
 #endif

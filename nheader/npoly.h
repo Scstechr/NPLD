@@ -42,11 +42,13 @@ void npoly_print(nlist_List *poly)
 {
 	int j = 0; // Safety
 	int k = 0;
+	double temp;
 	printf("f(x)=");
 	if ( poly->size > 1){
 		for(int i = poly->start; i != INT_MAX; i = poly->data[i].after){
 			assert(j <= poly->size);
-			if (poly->data[i].ditem != 0.0){
+			temp = poly->data[i].ditem;
+			if (temp > 0.0){
 				if(k == 0 ){
 					k++;
 					if (poly->data[i].ditem > 0){
@@ -128,8 +130,20 @@ void npoly_zeros(nlist_List *poly){
 	poly->size = 0;
 }
 
-void npoly_trans(){
-	;
+void npoly_zeros_quick(nlist_List *poly, int *array, int size){
+	for(int i = 0; i < size; i++){
+		poly->data[array[i]].ditem = 10.0;
+	}
+	//poly->size = 0;
+}
+
+void npoly_trans(nlist_List *poly, double *array, int size){
+	assert(poly->size == size);
+	int j = 0;
+	for(int i = poly->start; i != INT_MAX; i = poly->data[i].after){
+		poly->data[i].ditem = array[j];
+		j++;
+	}
 }
 
 #endif

@@ -33,11 +33,14 @@ void nrand_ver(){
 
 void npoly_ver(){
 	double coef[4];
+	double_init(coef, 4);
 	coef[0] = 3.0; coef[1] = 2.8; coef[3] = 4.0;
 	int coef_size = sizeof(coef)/sizeof(double);
 	nlist_List *poly = npoly_init(coef, coef_size, 1);
 	npoly_print(poly);
-	npoly_zeros(poly);
+	double_init(coef, 4);
+	coef[0] = 0.235; coef[2] = 0.810; coef[3] = 2.19;
+	npoly_trans(poly, coef, 4);
 	npoly_print(poly);
 }
 
