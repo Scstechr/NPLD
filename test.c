@@ -28,25 +28,24 @@ void nrand_ver(){
 		nlist_List *list = nrand_pick(1000, nrand_dist_pick(poly));
 		ndict_append(dict, list);
 	}
-	ndict_print(dict);
+	ndict_print(dict, 0, 0, 0);
 }
 
 void npoly_ver(){
 	double coef[4];
-	coef[3] = 4.0;
+	coef[0] = 3.0; coef[1] = 2.8; coef[3] = 4.0;
 	int coef_size = sizeof(coef)/sizeof(double);
 	nlist_List *poly = npoly_init(coef, coef_size, 1);
 	npoly_print(poly);
-	printf("%lf\n",npoly_subs(poly, 2.0));
-	npoly_integ(poly, 0.0, 1.0);
-	npoly_deriv(poly); npoly_print(poly);
+	npoly_zeros(poly);
+	npoly_print(poly);
 }
 
 int main(){
 	init_genrand((unsigned)time(NULL));
-	list_ver();
+	//list_ver();
 	//dict_ver();
 	//nrand_ver();
-	//npoly_ver();
+	npoly_ver();
 	return 0;
 }

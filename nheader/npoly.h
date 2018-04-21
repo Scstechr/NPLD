@@ -40,27 +40,30 @@ nlist_List *npoly_init(double *coeff, int coeff_size, int d_check)
 
 void npoly_print(nlist_List *poly)
 {
-	assert( poly->size > 1);
 	int j = 0; // Safety
 	int k = 0;
 	printf("f(x)=");
-	for(int i = poly->start; i != INT_MAX; i = poly->data[i].after){
-		assert(j <= poly->size);
-		if (poly->data[i].ditem != 0.0){
-			if(k == 0 ){
-				k++;
-				if (poly->data[i].ditem > 0){
-					printf("%.5lfx^{%d}", poly->data[i].ditem, j);
+	if ( poly->size > 1){
+		for(int i = poly->start; i != INT_MAX; i = poly->data[i].after){
+			assert(j <= poly->size);
+			if (poly->data[i].ditem != 0.0){
+				if(k == 0 ){
+					k++;
+					if (poly->data[i].ditem > 0){
+						printf("%.5lfx^{%d}", poly->data[i].ditem, j);
+					} else {
+						printf("-%.5lfx^{%d}", poly->data[i].ditem, j);
+					}
 				} else {
-					printf("-%.5lfx^{%d}", poly->data[i].ditem, j);
+					printf("%+.5lfx^{%d}", poly->data[i].ditem, j);
 				}
-			} else {
-				printf("%+.5lfx^{%d}", poly->data[i].ditem, j);
 			}
+			j++;
 		}
-		j++;
+		printf("\n");
+	} else {
+		printf("0.0");
 	}
-	printf("\n");
 }
 
 double npoly_subs(nlist_List *poly, double num)
@@ -114,6 +117,19 @@ double npoly_integ(nlist_List *poly, double a, double b)
 	double fb = npoly_subs(poly, b);
 	value = ( (b - a) / 6.0 ) * ( fa + ff + fb);
 	return value;
+}
+
+void npoly_zeros(nlist_List *poly){
+	for(int i = poly->start;
+			    i != INT_MAX;
+					i = poly->data[i].after){
+		poly->data[i].ditem = 0.0;
+	}
+	poly->size = 0;
+}
+
+void npoly_trans(){
+	;
 }
 
 #endif
