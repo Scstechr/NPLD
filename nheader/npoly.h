@@ -4,14 +4,6 @@
 #ifndef NPOLY_H
 #define NPOLY_H
 
-typedef struct{
-	double coeff[STACK_SIZE];
-	int dim[STACK_SIZE];
-	int size;
-	int start;
-	int end;
-} nrand_Poly;
-
 nlist_List *npoly_init(double *coeff, int coeff_size, int d_check)
 {
 	nlist_List *poly = nlist_init();
