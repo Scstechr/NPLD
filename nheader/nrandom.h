@@ -93,6 +93,7 @@ nlist_List *nrand_pick(int size, int num)
 	}
 	return list;
 }	
+
 void nrand_pick_void(nlist_List *list, int size, int num, int *range){
 	/* implementation of faster version */
 	/* requires range array from outside */
@@ -120,6 +121,18 @@ nlist_List *nrand_shuffle(nlist_List *list)
 		array[i] = temp;
 	}
 	return array_to_nlist(array, list->size);
+}
+
+void nrand_shuffle_void(nlist_List *list){
+	//int *array = nlist_to_array(list);
+	for(int i = list->end;
+			    i != list->start;
+					i = list->data[i].before){
+		int randnum = genrand_int32()%i;
+		int temp = list->data[randnum].item;
+		list->data[randnum].item = list->data[i].item;
+		list->data[i].item = temp;
+	}
 }
 
 #endif

@@ -11,4 +11,20 @@ void double_init(double *array, int size){
 	}
 }
 
+void int_print(int *array, int size){
+	printf("\n[");
+	for(int i = 0; i < size; i++){
+		printf("%d,", array[i]);
+	}
+	printf("\b]\n");
+}
+
+void dbl_print(double *array, int size){
+	printf("\n[");
+	for(int i = 0; i < size; i++){
+		printf("%.3lf,", array[i]);
+	}
+	printf("\b]\n");
+}
+
 #endif
