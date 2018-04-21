@@ -135,4 +135,35 @@ void nrand_shuffle_void(nlist_List *list){
 	}
 }
 
+void nrand_shuffle_ex(nlist_List *list, int *array, int size, int ex){
+	//int *array = nlist_to_array(list);
+	int j = 0;
+	for(int i = list->end;
+			    i != list->start;
+					i = list->data[i].before){
+		int randnum = genrand_int32()%i;
+		while (randnum == ex) randnum = genrand_int32()%i;
+		int temp = list->data[randnum].item;
+		list->data[randnum].item = list->data[i].item;
+		list->data[i].item = temp;
+		if (j < size){
+			array[j] = temp; j ++;
+		} else {
+			break;
+		}
+	}
+}
+
+void nrand_shuffle_ex_simple(nlist_List *list, int ex){
+	//int *array = nlist_to_array(list);
+	for(int i = list->end;
+			    i != list->start;
+					i = list->data[i].before){
+		int randnum = genrand_int32()%i;
+		while (randnum == ex) randnum = genrand_int32()%i;
+		int temp = list->data[randnum].item;
+		list->data[randnum].item = list->data[i].item;
+		list->data[i].item = temp;
+	}
+}
 #endif

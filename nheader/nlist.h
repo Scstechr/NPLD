@@ -359,32 +359,27 @@ void nlist_conc(nlist_List *a, nlist_List *b){
 }
 
 void exclusion(nlist_List *range, int size, int index){
-	// this only works with sorted list generated w/ range func. //
-	if(index == 0){
-		range->start = 1;
-		range->size --;
-	} else if (index == size - 1){
-		range->end = index - 1;
-		range->data[index - 1].after = INT_MAX;
-		range->size --;
-	} else {
-		range->data[index-1].after = index + 1;
-		range->data[index+1].before = index - 1;
-		range->size --;
-	}
+	nlist_delete(range, index);
 }
 
-void inclusion(nlist_List *range, int size, int index){
-	// this only works with sorted list generated w/ range func. //
-	if(index == 0){
-		range->start = 0;
-		range->size ++;
-	} else if (index == size - 1){
-		;
+void inclusion(nlist_List *list, int size, int index){
+	if (index == 0){
+		list->start = index;
+		list->data[index].after = 1;
+		list->data[index].before = -1;
+		list->data[index+1].before = 0;
+	} else if (index == list->end){
+		list->end = size - 1;
+		list->data[list->end - 1].after = list->end;
+		list->data[list->end].before = list->end - 1;
+		list->data[list->end].after = INT_MAX;
 	} else {
-		range->data[index-1].after = index;
-		range->data[index+1].before = index;
-		range->size ++;
+		list->data[index-1].after =  index;
+		list->data[index+1].before = index;
+
+		list->data[index].after = index + 1;
+		list->data[index].before = index - 1;
 	}
+	list->size ++;
 }
 #endif
