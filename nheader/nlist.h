@@ -91,6 +91,8 @@ void nlist_append(nlist_List *list, int n)
 	assert(list->size < STACK_SIZE);
 }
 
+
+
 nlist_List *nlist_range(int n){
 	nlist_List *list = (nlist_List*)malloc(sizeof(nlist_List));
 	list->size = n;
@@ -358,28 +360,13 @@ void nlist_conc(nlist_List *a, nlist_List *b){
 	}
 }
 
-void exclusion(nlist_List *range, int size, int index){
-	nlist_delete(range, index);
-}
-
-void inclusion(nlist_List *list, int size, int index){
-	if (index == 0){
-		list->start = index;
-		list->data[index].after = 1;
-		list->data[index].before = -1;
-		list->data[index+1].before = 0;
-	} else if (index == list->end){
-		list->end = size - 1;
-		list->data[list->end - 1].after = list->end;
-		list->data[list->end].before = list->end - 1;
-		list->data[list->end].after = INT_MAX;
-	} else {
-		list->data[index-1].after =  index;
-		list->data[index+1].before = index;
-
-		list->data[index].after = index + 1;
-		list->data[index].before = index - 1;
+void nlist_trans(nlist_List *from, nlist_List *to){
+	int size;
+	if (from->size > to->size){
+		;
+	} (from->size <= to->size){
+		;
 	}
-	list->size ++;
 }
+
 #endif
