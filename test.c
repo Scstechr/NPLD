@@ -1,12 +1,12 @@
 #include "header.h"
 
 void list_ver(){
-	nlist_List *a = nlist_linspace(0, 800, 100);
-	nlist_List *b = nlist_linspace(800, 1000, 10);
-	nlist_print(a);
-	nlist_print(b);
-	nlist_conc(a, b);
-	nlist_print(a);
+	nlist_List *a = nlist_linspace(1, 4, 1);
+	nlist_List *b = nlist_linspace(4, 8, 1);
+	nlist_print(a); nlist_print(b);
+	nlist_trans(b, a);
+	nlist_print(a); nlist_print(b);
+	
 }
 
 void dict_ver(){
@@ -46,9 +46,9 @@ void npoly_ver(){
 
 int main(){
 	init_genrand((unsigned)time(NULL));
-	//list_ver();
+	list_ver();
 	//dict_ver();
 	//nrand_ver();
-	npoly_ver();
+	//npoly_ver();
 	return 0;
 }

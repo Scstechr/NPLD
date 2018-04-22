@@ -361,11 +361,11 @@ void nlist_conc(nlist_List *a, nlist_List *b){
 }
 
 void nlist_trans(nlist_List *from, nlist_List *to){
-	int size;
-	if (from->size > to->size){
-		;
-	} (from->size <= to->size){
-		;
+	nlist_clear(to);
+	for(int i = from->start;
+			i != INT_MAX;
+			i = from->data[i].after){
+		nlist_append(to, from->data[i].item);
 	}
 }
 
