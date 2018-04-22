@@ -35,7 +35,7 @@ void nlist_simple_print_dbl(nlist_List *list){
 	if (list->size > 0){
 		for(int i = list->start; i != INT_MAX; i = list->data[i].after){
 			assert(j < list->size);
-			printf("%.5lf ", list->data[i].ditem);
+			printf("%.8lf ", list->data[i].ditem);
 			j++;
 		}
 	}
