@@ -93,4 +93,13 @@ void ndict_print_dbl(ndict_Dict *dict, int idx, int idx2, int idx3){
 		}
 	}
 }
+
+void nlist_trans_dbl(nlist_List *from, nlist_List *to){
+	nlist_clear(to);
+	for(int i = from->start;
+			i != INT_MAX;
+			i = from->data[i].after){
+		nlist_append_dbl(to, from->data[i].ditem);
+	}
+}
 #endif

@@ -366,6 +366,7 @@ void nlist_trans(nlist_List *from, nlist_List *to){
 			i != INT_MAX;
 			i = from->data[i].after){
 		nlist_append(to, from->data[i].item);
+		to->data[to->size-1].ditem = from->data[i].ditem;
 	}
 }
 
