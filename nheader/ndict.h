@@ -145,6 +145,7 @@ void ndict_print(ndict_Dict *dict, int idx, int idx2, int idx3){
 		if (idx2 == 1) { printf("  j,"); }
 		if (idx3 == 1) { printf(" size,"); }
 		if (idx == 1 || idx2 == 1 || idx3 == 1) { printf("list"); }
+		printf("\n");
 		if(dict->size != 0){
 			int j = 0;
 			for(int i = dict->start; i != INT_MAX; i = dict->data[i].after){
