@@ -32,32 +32,6 @@ void nrand_ver(){
 	ndict_print(dict, 0, 0, 0);
 }
 
-double npoly_kl_sum(nlist_List *poly, nlist_List *poly2){
-	// size of poly >= poly2
-	double p, q, pq, res = 0.0;
-	for(int i = 0; i < poly->size; i++){
-		p = poly->data[i].ditem;
-		if (i <= poly2->size) {
-			q = poly2->data[i].ditem;
-			if ((p != 0.0)&&(q != 0.0)){
-				res += p*log2(p / q);
-			} 
-		}
-	}
-	if (res < 0.0) res *= -1;
-	return res;
-}
-
-double npoly_kl(nlist_List *poly, nlist_List *poly2){
-	double res;
-	if (poly->size > poly2->size){
-		res = npoly_kl_sum(poly, poly2);
-	} else {
-		res = npoly_kl_sum(poly2, poly);
-	}
-	return res;
-}
-
 void coefrand(double *coef, int size){
 	for(int i = 0; i < size; i++) coef[i] = genrand_real1();
 }
@@ -67,9 +41,8 @@ void npoly_ver(){
 	int size1 = 0; int size2 = 3;
 	while((size1 < 2)||(size2 < 2)||(size1 == size2)){
 		size1 = genrand_int31()%6;
-		//size2 = genrand_int31()%6;
+		size2 = genrand_int31()%6;
 	}
-	size2 = size1;
 
 	double coef[size1]; coefrand(coef, size1);
 	nlist_List *poly = npoly_init(coef, size1, 1);
@@ -78,7 +51,7 @@ void npoly_ver(){
 	nlist_List *poly2 = npoly_init(coef2, size2, 1);
 
 	double res = npoly_kl(poly, poly2);
-	printf("res:%lf\n", res);
+	printf("res: %lf\n", res);
 	free(poly);free(poly2);
 }
 
