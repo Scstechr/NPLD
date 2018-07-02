@@ -34,31 +34,28 @@ void nrand_ver(){
 
 double npoly_kl_sum(nlist_List *poly, nlist_List *poly2){
 	// size of poly >= poly2
-	double p, q;
+	double p, q, pq, res = 0.0;
 	for(int i = 0; i < poly->size; i++){
 		p = poly->data[i].ditem;
 		if (i <= poly2->size) {
 			q = poly2->data[i].ditem;
-		} else {
-			q = 0.0;
+			if ((p != 0.0)&&(q != 0.0)){
+				res += p*log2(p / q);
+			} 
 		}
-		printf("p = %lf ", p);
-		printf("q = %lf ", q);
-		printf("\n");
 	}
-	printf("\n");
+	if (res < 0.0) res *= -1;
+	return res;
 }
 
 double npoly_kl(nlist_List *poly, nlist_List *poly2){
-	printf("size:%d,", poly->size); printf("size2:%d", poly2->size); printf("\n");
-	npoly_print(poly); npoly_print(poly2);
+	double res;
 	if (poly->size > poly2->size){
-		npoly_kl_sum(poly, poly2);
+		res = npoly_kl_sum(poly, poly2);
 	} else {
-		npoly_kl_sum(poly2, poly);
+		res = npoly_kl_sum(poly2, poly);
 	}
-	double a = 0.0;
-	return a;
+	return res;
 }
 
 void coefrand(double *coef, int size){
@@ -67,10 +64,12 @@ void coefrand(double *coef, int size){
 
 void npoly_ver(){
 	init_genrand((unsigned)time(NULL));
-	int size1 = 0;
-	while(size1 < 1) size1 = genrand_int31()%6;
-	int size2 = 0;
-	while(size2 < 1) size2 = genrand_int31()%6;
+	int size1 = 0; int size2 = 3;
+	while((size1 < 2)||(size2 < 2)||(size1 == size2)){
+		size1 = genrand_int31()%6;
+		//size2 = genrand_int31()%6;
+	}
+	size2 = size1;
 
 	double coef[size1]; coefrand(coef, size1);
 	nlist_List *poly = npoly_init(coef, size1, 1);
@@ -78,7 +77,8 @@ void npoly_ver(){
 	double coef2[size2]; coefrand(coef2, size2);
 	nlist_List *poly2 = npoly_init(coef2, size2, 1);
 
-	npoly_kl(poly, poly2);
+	double res = npoly_kl(poly, poly2);
+	printf("res:%lf\n", res);
 	free(poly);free(poly2);
 }
 
