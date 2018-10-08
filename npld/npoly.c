@@ -138,8 +138,6 @@ void npoly_trans(nlist_List *poly, double *array, int size){
 		j++;
 	}
 }
-<<<<<<< HEAD:npld/npoly.c
-=======
 
 //Kullback-Leibler divergence
 double npoly_kl_sum(nlist_List *poly, nlist_List *poly2){
@@ -166,4 +164,3 @@ double npoly_kl(nlist_List *poly, nlist_List *poly2){
 	return res;
 }
 #endif
->>>>>>> 5acddafe885dc21625c52876ddd447f780d82e42:nheader/npoly.h
