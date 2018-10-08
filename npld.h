@@ -109,6 +109,8 @@ double npoly_integ(nlist_List *poly, double a, double b);
 void npoly_zeros(nlist_List *poly);
 void npoly_zeros_quick(nlist_List *poly, int *array, int size);
 void npoly_trans(nlist_List *poly, double *array, int size);
+double npoly_kl_sum(nlist_List *poly, nlist_List *poly2);
+double npoly_kl(nlist_List *poly, nlist_List *poly2);
 
 //ndouble.c
 void rand_shuffle(double *array, int size);
