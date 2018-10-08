@@ -25,6 +25,7 @@ double genrand_real3(void);
 double genrand_res53(void);
 
 // nutils.c
+void flagprint(int flag);
 void double_init(double *array, int size);
 void int_print(int *array, int size);
 void dbl_print(double *array, int size);
@@ -130,9 +131,5 @@ nlist_List *nrand_shuffle(nlist_List *list);
 void nrand_shuffle_void(nlist_List *list);
 void nrand_shuffle_ex(nlist_List *list, int *array, int size, int ex);
 void nrand_shuffle_ex_simple(nlist_List *list, int ex);
-
-//setting.c
-nlist_List *setProb();
-nlist_List *setStep(int slotsize, double detail, double end,  double level_1, double level_2);
 
 #endif

@@ -2,6 +2,16 @@
 
 #include "../npld.h"
 
+void flagprint(int flag){
+	if (flag == 0){
+		printf("ON");
+	} else if (flag == 1){
+		printf("OFF");
+	} else {
+		assert(0);
+	}
+}
+
 void double_init(double *array, int size){
 	for(int i = 0; i < size; i++){
 		array[i] = 0.0;
