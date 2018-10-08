@@ -163,4 +163,3 @@ double npoly_kl(nlist_List *poly, nlist_List *poly2){
 	}
 	return res;
 }
-#endif
