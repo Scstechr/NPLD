@@ -1,7 +1,12 @@
+<<<<<<< HEAD
 #include <time.h>
 #include <stdio.h>
 
 #include "npld.h"
+=======
+#include "header.h"
+#include "math.h"
+>>>>>>> 5acddafe885dc21625c52876ddd447f780d82e42
 
 void list_ver(){
 	nlist_List *a = nlist_linspace(1, 4, 1);
@@ -34,21 +39,32 @@ void nrand_ver(){
 	ndict_print(dict, 0, 0, 0);
 }
 
+void coefrand(double *coef, int size){
+	for(int i = 0; i < size; i++) coef[i] = genrand_real1();
+}
+
 void npoly_ver(){
-	double coef[4];
-	double_init(coef, 4);
-	coef[0] = 3.0; coef[1] = 2.8; coef[3] = 4.0;
-	int coef_size = sizeof(coef)/sizeof(double);
-	nlist_List *poly = npoly_init(coef, coef_size, 1);
-	npoly_print(poly);
-	double_init(coef, 4);
-	coef[0] = 0.235; coef[2] = 0.810; coef[3] = 2.19;
-	npoly_trans(poly, coef, 4);
-	npoly_print(poly);
+	init_genrand((unsigned)time(NULL));
+	int size1 = 0; int size2 = 3;
+	while((size1 < 2)||(size2 < 2)||(size1 == size2)){
+		size1 = genrand_int31()%6;
+		size2 = genrand_int31()%6;
+	}
+
+	double coef[size1]; coefrand(coef, size1);
+	nlist_List *poly = npoly_init(coef, size1, 1);
+
+	double coef2[size2]; coefrand(coef2, size2);
+	nlist_List *poly2 = npoly_init(coef2, size2, 1);
+
+	double res = npoly_kl(poly, poly2);
+	printf("res: %lf\n", res);
+	free(poly);free(poly2);
 }
 
 int main(){
 	init_genrand((unsigned)time(NULL));
+<<<<<<< HEAD
 	printf("\n nlist:test \n");
 	list_ver();
 	printf("\n ndict:test \n");
@@ -56,6 +72,11 @@ int main(){
 	printf("\n nrand:test \n");
 	nrand_ver();
 	printf("\n npoly:test \n");
+=======
+	//list_ver();
+	//dict_ver();
+	//nrand_ver();
+>>>>>>> 5acddafe885dc21625c52876ddd447f780d82e42
 	npoly_ver();
 	return 0;
 }

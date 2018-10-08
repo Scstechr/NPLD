@@ -38,7 +38,11 @@ void nlist_simple_print_dbl(nlist_List *list){
 	if (list->size > 0){
 		for(int i = list->start; i != INT_MAX; i = list->data[i].after){
 			assert(j < list->size);
+<<<<<<< HEAD:npld/ndouble.c
 			printf("%.8lf ", list->data[i].ditem);
+=======
+			printf("%.16lf ", list->data[i].ditem);
+>>>>>>> 5acddafe885dc21625c52876ddd447f780d82e42:nheader/ndouble.h
 			j++;
 		}
 	}
