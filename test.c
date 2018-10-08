@@ -1,4 +1,7 @@
-#include "header.h"
+#include <time.h>
+#include <stdio.h>
+
+#include "npld.h"
 
 void list_ver(){
 	nlist_List *a = nlist_linspace(1, 4, 1);
@@ -46,9 +49,13 @@ void npoly_ver(){
 
 int main(){
 	init_genrand((unsigned)time(NULL));
+	printf("\n nlist:test \n");
 	list_ver();
-	//dict_ver();
-	//nrand_ver();
-	//npoly_ver();
+	printf("\n ndict:test \n");
+	dict_ver();
+	printf("\n nrand:test \n");
+	nrand_ver();
+	printf("\n npoly:test \n");
+	npoly_ver();
 	return 0;
 }

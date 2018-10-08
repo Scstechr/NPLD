@@ -1,8 +1,9 @@
-/* npoly.h */
-/* headerfile dedicated to polynomial */
+#include <limits.h>
+#include <assert.h>
+#include <stdio.h>
+#include <math.h>
 
-#ifndef NPOLY_H
-#define NPOLY_H
+#include "../npld.h"
 
 nlist_List *npoly_init(double *coeff, int coeff_size, int d_check)
 {
@@ -137,5 +138,3 @@ void npoly_trans(nlist_List *poly, double *array, int size){
 		j++;
 	}
 }
-
-#endif

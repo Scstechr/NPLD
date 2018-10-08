@@ -1,7 +1,5 @@
+#include "../npld.h"
 /* MT.h */
-#ifndef MT_H
-#define MT_H
-
 
 /*
    A C-program for MT19937, with initialization improved 2002/1/26.
@@ -184,4 +182,3 @@ double genrand_res53(void)
 }
 /* These real versions are due to Isaku Wada, 2002/01/09 added */
 
-#endif

@@ -1,27 +1,9 @@
-/* ndict.h */
-/* fake dict structure in C */
-#ifndef NDICT_H
-#define NDICT_H
-
 #include <stdio.h>
+#include <limits.h>
 #include <stdlib.h>
 #include <assert.h>
-#include <limits.h>
 
-#include "nlist.h"
-
-typedef struct{
-	nlist_List *list;
-	int before;
-	int after;
-} ndict_Item;
-
-typedef struct{
-	ndict_Item data[STACK_SIZE];
-	int end;
-	int start;
-	int size;
-} ndict_Dict;
+#include "../npld.h"
 
 void ndict_clear(ndict_Dict *dict)
 {
@@ -145,6 +127,7 @@ void ndict_print(ndict_Dict *dict, int idx, int idx2, int idx3){
 		if (idx2 == 1) { printf("  j,"); }
 		if (idx3 == 1) { printf(" size,"); }
 		if (idx == 1 || idx2 == 1 || idx3 == 1) { printf("list"); }
+		printf("\n");
 		if(dict->size != 0){
 			int j = 0;
 			for(int i = dict->start; i != INT_MAX; i = dict->data[i].after){
@@ -213,4 +196,3 @@ end:
 	return dict;
 }
 
-#endif

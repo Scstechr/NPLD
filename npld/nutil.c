@@ -1,9 +1,6 @@
-#ifndef UTIL_H
-#define UTIL_H
+#include <stdio.h>
 
-void pass(){
-	;
-}
+#include "../npld.h"
 
 void double_init(double *array, int size){
 	for(int i = 0; i < size; i++){
@@ -26,5 +23,3 @@ void dbl_print(double *array, int size){
 	}
 	printf("\b]\n");
 }
-
-#endif

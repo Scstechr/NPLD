@@ -1,5 +1,8 @@
-#ifndef NDOUBLE_H
-#define NDOUBLE_H
+#include <limits.h>
+#include <stdio.h>
+#include <assert.h>
+
+#include "../npld.h"
 
 void rand_shuffle(double *array, int size)
 {
@@ -102,4 +105,3 @@ void nlist_trans_dbl(nlist_List *from, nlist_List *to){
 		nlist_append_dbl(to, from->data[i].ditem);
 	}
 }
-#endif

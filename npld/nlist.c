@@ -1,24 +1,9 @@
-/* nlist.h */
-/* list structure in C */
-#ifndef NLIST_H
-#define NLIST_H
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <limits.h>
 
-#include "../header.h"
-
-typedef struct{
-	int item;
-	int idx;
-	double ditem;
-	int before;
-	int after;
-} nlist_Item;
-
-typedef struct{
-	nlist_Item data[STACK_SIZE]; // This also has to change to malloc()
-	int size;
-	int start;
-	int end;
-} nlist_List;
+#include "../npld.h"
 
 void nlist_clear(nlist_List *list){
 	list->size = 0;
@@ -280,6 +265,7 @@ void nlist_insert(nlist_List *list, int index, int n)
 	list->size++;
 	assert(list->size < STACK_SIZE);
 }
+
 void nlist_substitute(nlist_List *list, int index, int n){
 	assert(list->size > 0);
 	assert(index < list->size);
@@ -369,5 +355,3 @@ void nlist_trans(nlist_List *from, nlist_List *to){
 		to->data[to->size-1].ditem = from->data[i].ditem;
 	}
 }
-
-#endif

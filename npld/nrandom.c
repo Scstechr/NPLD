@@ -1,16 +1,9 @@
-/* nrandom.h */
-/* Header Dedicated to Random Related Subjects */
-/* requires nlist.h */
-#ifndef NRANDOM_H
-#define NRANDOM_H
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include <limits.h>
 
-#include "nlist.h"
-#include "npoly.h"
+#include "../npld.h"
 
 int nrand_dist_pick(nlist_List *poly)
 {
@@ -169,4 +162,3 @@ void nrand_shuffle_ex_simple(nlist_List *list, int ex){
 		list->data[i].item = temp;
 	}
 }
-#endif
