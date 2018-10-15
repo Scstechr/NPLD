@@ -51,7 +51,6 @@ void nlist_clear(nlist_List *list);
 nlist_List *nlist_init();
 void printt(int item);
 void nlist_print_param(int index, int n, int before, int after);
-static void nlist_setparam(nlist_List *list, int index, int n, int before, int after) ;
 void nlist_sizecheck(nlist_List *list);
 void nlist_append(nlist_List *list, int n);
 nlist_List *nlist_range(int n);
@@ -123,9 +122,6 @@ void nlist_trans_dbl(nlist_List *from, nlist_List *to);
 
 //nrandom.c
 int nrand_dist_pick(nlist_List *poly);
-static nlist_List *nrand_loop(nlist_List *poly, int trial);
-static void nrand_loop2(nlist_List *list, nlist_List *poly, double *max, double *min, double *sum, int trial);
-static void nrand_dist_head(nlist_List *poly, int trial);
 void nrand_dist_check(nlist_List *poly);
 nlist_List *nrand_pick(int size, int num);
 void nrand_pick_void(nlist_List *list, int size, int num, int *range);
