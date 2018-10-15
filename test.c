@@ -5,33 +5,54 @@
 #include "npld.h"
 
 void list_ver(){
-	nlist_List *a = nlist_linspace(1, 4, 1);
-	nlist_List *b = nlist_linspace(4, 8, 1);
+	// linspace(start, end, step)
+	nlist_List *a = nlist_linspace(1, 4, 1); //-> [1,2,3]
+	nlist_List *b = nlist_linspace(4, 8, 1); //-> [4,5,6,7]
 	nlist_print(a); nlist_print(b);
-	nlist_trans(b, a);
+	nlist_trans(b, a);                       //-> a = [1,2,3]
 	nlist_print(a); nlist_print(b);
-	
 }
 
 void dict_ver(){
+	// initializing dict (empty dict)
 	ndict_Dict *dict = ndict_init();
+
+	// some random sequence
 	int rep[10] = {2, 3, 8, 2, 3, 9, 2, 2, 3, 8};
+
 	for(int i = 0; i < 10; i ++){
+		// random pick number of numerals with in range of 0 and 100
 		nlist_List *list = nrand_pick(100, rep[i]);
 		ndict_append(dict, list);
 	}
+	// print out
+	ndict_print(dict, 0, 0, 0);
 }
 
 void nrand_ver(){
-	double coef[9] = {0.0, 0.0, 0.5, 0.28, 0.0, 0.0, 0.0, 0.0, 0.22};
+	// initialize double sequence with 0
+	double coef[9]; double_init(coef, 9);
+
+	// realize distribution function
+	// l(x) = 0.5 x^2 + 0.28 x^3 + 0.22 x^8
+	coef[2] = 0.5; coef[3] = 0.28; coef[8] = 0.22;
+
 	int coef_size = sizeof(coef)/sizeof(double);
+
+	// initialize poly with above distribution function
 	nlist_List *poly = npoly_init(coef, coef_size, 0);
+
+
+	// initialize dict
 	ndict_Dict *dict = ndict_init();
+	// check if distribution is serving correctly
 	nrand_dist_check(poly);
+
 	for(int i = 0; i < 30; i ++){
 		nlist_List *list = nrand_pick(1000, nrand_dist_pick(poly));
 		ndict_append(dict, list);
 	}
+	// print out
 	ndict_print(dict, 0, 0, 0);
 }
 
